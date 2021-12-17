@@ -23,11 +23,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Travel UI',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Color(0xFF4dbedc),
-        accentColor: Color(0xFFD8ECF1),
-        scaffoldBackgroundColor: Color(0xFFF3F5F7),
+        primaryColor: const Color(0xFF4dbedc),
+        accentColor: const Color(0xFFD8ECF1),
+        scaffoldBackgroundColor: const Color(0xFFfcfcfc),
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }

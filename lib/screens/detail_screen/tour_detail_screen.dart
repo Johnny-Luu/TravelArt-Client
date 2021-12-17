@@ -5,6 +5,8 @@ import 'package:travelapp/models/destination_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travelapp/widgets/planning_item.dart';
 
+import 'detail_tab.dart';
+
 class TourDetailScreen extends StatefulWidget {
   final Destination destination;
 
@@ -106,59 +108,20 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                       ),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              FontAwesomeIcons.locationArrow,
-                              size: 15.0,
-                              color: Colors.white,
-                            ),
-                            const SizedBox(width: 5.0),
-                            Text(
-                              widget.destination.country,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.0,
-                              ),
-                            ),
-                          ],
+                        const Icon(
+                          FontAwesomeIcons.locationArrow,
+                          size: 15.0,
+                          color: Colors.white,
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
-                            Icon(
-                              FontAwesomeIcons.dollarSign,
-                              size: 18.0,
-                              color: Colors.white,
-                            ),
-                            Text(
-                              "1.000.000 VND",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
-                            Icon(
-                              Icons.location_on,
-                              size: 20.0,
-                              color: Colors.white,
-                            ),
-                            Text(
-                              "3 locations",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
+                        const SizedBox(width: 5.0),
+                        Text(
+                          widget.destination.country,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15.0,
+                          ),
                         ),
                       ],
                     ),
@@ -189,7 +152,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                 insets: const EdgeInsets.symmetric(horizontal: 75.0),
               ),
               tabs: const [
-                Tab(child: Text("Description")),
+                Tab(child: Text("Details")),
                 Tab(child: Text("Plan")),
                 Tab(child: Text("Rating")),
               ],
@@ -200,15 +163,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
               controller: _tabController,
               children: [
                 // description section
-                Container(
-                  padding: const EdgeInsets.all(20.0),
-                  child: const Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sollicitudin sed ligula vel rutrum. Nulla facilisi. Mauris neque urna, imperdiet nec felis a, varius rutrum neque. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris blandit, arcu eu tristique bibendum, ante odio tristique nibh, ut pulvinar sem augue quis neque. Pellentesque elementum purus id orci interdum, eget lobortis urna mollis. Donec a massa consectetur, fringilla augue in, pellentesque libero.",
-                    style: TextStyle(
-                      color: Colors.black54,
-                    ),
-                  ),
-                ),
+                DetailTab(context),
                 // planning section
                 ListView.builder(
                   padding: const EdgeInsets.all(15.0),
@@ -219,7 +174,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                   },
                 ),
                 // rating section
-                const Text("Hello word 2"),
+                const Text("Rating section"),
               ],
             ),
           ),
