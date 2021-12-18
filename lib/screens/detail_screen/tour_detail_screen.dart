@@ -168,6 +168,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                 DetailTab(context),
                 // planning section
                 ListView.builder(
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.all(15.0),
                   itemCount: widget.destination.activities.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -185,5 +186,3 @@ class _TourDetailScreenState extends State<TourDetailScreen>
     );
   }
 }
-
-
