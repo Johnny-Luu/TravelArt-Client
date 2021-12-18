@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:travelapp/models/activity_model.dart';
 import 'package:travelapp/models/destination_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:travelapp/screens/detail_screen/rating_tab.dart';
+import 'package:travelapp/widgets/comment_item.dart';
 import 'package:travelapp/widgets/planning_item.dart';
 
 import 'detail_tab.dart';
@@ -174,7 +176,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                   },
                 ),
                 // rating section
-                const Text("Rating section"),
+                RatingTab(),
               ],
             ),
           ),
@@ -183,3 +185,5 @@ class _TourDetailScreenState extends State<TourDetailScreen>
     );
   }
 }
+
+

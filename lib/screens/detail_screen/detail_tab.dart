@@ -11,6 +11,7 @@ Widget DetailTab(BuildContext context) {
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,7 +207,7 @@ Widget DetailTab(BuildContext context) {
             ),
           ),
           const SizedBox(width: 4.0),
-          Icon(
+          const Icon(
             FontAwesomeIcons.angleDoubleRight,
             color: Colors.white,
           ),
