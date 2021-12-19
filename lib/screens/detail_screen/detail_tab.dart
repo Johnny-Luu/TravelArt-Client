@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travelapp/screens/choose_tourgroup_screen/choose_tourgroup_screen.dart';
+import 'package:travelapp/screens/confirm_info_screen/confirm_info_screen.dart';
 
 Widget DetailTab(BuildContext context) {
   return Scaffold(
@@ -187,31 +189,41 @@ Widget DetailTab(BuildContext context) {
         ),
       ],
     ),
-    bottomNavigationBar: Container(
-      margin: const EdgeInsets.fromLTRB(2, 0, 2, 2),
-      width: double.infinity,
-      height: 50.0,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50.0),
-        color: Theme.of(context).primaryColor,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Book Now",
-            style: GoogleFonts.roboto(
-              fontSize: 20.0,
-              fontWeight: FontWeight.w600,
+    bottomNavigationBar: InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChooseTourGroupScreen(),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(5, 0, 5, 2),
+        width: double.infinity,
+        height: 50.0,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50.0),
+          color: Theme.of(context).primaryColor,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Book Now",
+              style: GoogleFonts.roboto(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 4.0),
+            const Icon(
+              FontAwesomeIcons.angleDoubleRight,
               color: Colors.white,
             ),
-          ),
-          const SizedBox(width: 4.0),
-          const Icon(
-            FontAwesomeIcons.angleDoubleRight,
-            color: Colors.white,
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );
