@@ -36,12 +36,25 @@ class _ChooseTourGroupState extends State<ChooseTourGroupScreen> {
                       const SizedBox(height: 20.0),
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0),
-                        child: Text(
-                          'Pick\na group',
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: 52,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Pick',
+                              style: GoogleFonts.playfairDisplay(
+                                fontSize: 58,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Text(
+                              'a group',
+                              style: GoogleFonts.playfairDisplay(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 38,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 20.0),
