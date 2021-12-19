@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:travelapp/screens/home_screen/tour_carousel.dart';
 import 'package:travelapp/screens/home_screen/hotel_carousel.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:travelapp/screens/profile_screen/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -42,10 +43,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                const CircleAvatar(
-                  radius: 20.0,
-                  backgroundImage:
-                      NetworkImage('http://i.imgur.com/zL4Krbz.jpg'),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(),
+                      ),
+                    );
+                  },
+                  child: const CircleAvatar(
+                    radius: 20.0,
+                    backgroundImage:
+                        NetworkImage('http://i.imgur.com/zL4Krbz.jpg'),
+                  ),
                 ),
               ],
             ),

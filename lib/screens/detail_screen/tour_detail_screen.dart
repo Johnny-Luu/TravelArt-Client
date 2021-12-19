@@ -132,7 +132,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
             ],
           ),
           DefaultTabController(
-            length: 2,
+            length: 3,
             child: TabBar(
               controller: _tabController,
               labelColor: Colors.blue[800],
