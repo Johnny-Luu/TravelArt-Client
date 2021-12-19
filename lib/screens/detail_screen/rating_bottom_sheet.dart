@@ -17,16 +17,16 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
   void ratingText() {
     switch (_rating.toInt()) {
       case 1:
-        _comment = "Very Bad";
+        _comment = "Awful";
         return;
       case 2:
         _comment = "Bad";
         return;
       case 3:
-        _comment = "Good";
+        _comment = "Normal";
         return;
       case 4:
-        _comment = "Very Good";
+        _comment = "Good";
         return;
       case 5:
         _comment = "Excellent";
@@ -69,14 +69,42 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
         Text(_comment),
         const SizedBox(height: 20.0),
         const TextField(
-          maxLength: 200,
           maxLines: null,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            border: UnderlineInputBorder(),
             labelText: 'Comment',
           ),
         ),
-        const SizedBox(height: 30.0),
+        const SizedBox(height: 20.0),
+        Container(
+          margin: const EdgeInsets.fromLTRB(5, 0, 5, 2),
+          width: double.infinity,
+          height: 50.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50.0),
+            color: Theme.of(context).primaryColor,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Submit",
+                style: GoogleFonts.roboto(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(width: 4.0),
+              const Icon(
+                FontAwesomeIcons.locationArrow,
+                size: 18,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20.0),
       ],
     );
   }

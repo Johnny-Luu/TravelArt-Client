@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <Widget>[
                 Row(
                   children: const [
-                    Icon(FontAwesomeIcons.bars),
+                    Image(image: AssetImage('assets/images/icon-menu.png')),
                     SizedBox(width: 10),
                     Text(
                       "Hello, User",
@@ -43,14 +43,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 const CircleAvatar(
-                  radius: 15.0,
+                  radius: 20.0,
                   backgroundImage:
                       NetworkImage('http://i.imgur.com/zL4Krbz.jpg'),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 120.0),
             child: Column(
@@ -63,13 +63,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                Text(
-                  'the nature',
-                  style: GoogleFonts.playfairDisplay(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 38,
-                    fontWeight: FontWeight.w700,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      'the nature',
+                      style: GoogleFonts.playfairDisplay(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 38,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Image(
+                      width: 32,
+                      color: Theme.of(context).primaryColor,
+                      image: const AssetImage('assets/images/icon-plane.png'),
+                    ),
+                  ],
                 ),
               ],
             ),

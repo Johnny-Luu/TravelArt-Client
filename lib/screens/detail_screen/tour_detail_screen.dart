@@ -68,8 +68,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      iconSize: 30.0,
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded),
                       color: Colors.black,
                       onPressed: () => Navigator.pop(context),
                     ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelapp/screens/choose_tourgroup_screen/choose_tourgroup_screen.dart';
-import 'package:travelapp/screens/confirm_info_screen/confirm_info_screen.dart';
 
 Widget DetailTab(BuildContext context) {
   return Scaffold(
@@ -18,16 +17,13 @@ Widget DetailTab(BuildContext context) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // rating
                   Container(
                     width: 100,
                     padding: const EdgeInsets.all(14.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16.0),
-                      border: Border.all(
-                        color: Colors.blue[50]!,
-                        width: 1.0,
-                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,15 +63,12 @@ Widget DetailTab(BuildContext context) {
                       ],
                     ),
                   ),
+                  // price
                   Container(
                     padding: const EdgeInsets.all(14.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16.0),
-                      border: Border.all(
-                        color: Colors.blue[50]!,
-                        width: 1.0,
-                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,16 +107,13 @@ Widget DetailTab(BuildContext context) {
                       ],
                     ),
                   ),
+                  // visit
                   Container(
                     width: 100,
                     padding: const EdgeInsets.all(14.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16.0),
-                      border: Border.all(
-                        color: Colors.blue[50]!,
-                        width: 1.0,
-                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
