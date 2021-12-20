@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "554629391235",
+    "firebase_url": "https://tourmanagementsystem-57929-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "tourmanagementsystem-57929",
+    "storage_bucket": "tourmanagementsystem-57929.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554629391235:android:df1ad9e52855b6864dccb6",
+        "android_client_info": {
+          "package_name": "com.example.travelapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554629391235-1ske4q5php5dr4es6lcsrbfp0h8dkgpb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0GLTJAkVLsx1V6kyAE8pcbKSBL51ngwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554629391235-1ske4q5php5dr4es6lcsrbfp0h8dkgpb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

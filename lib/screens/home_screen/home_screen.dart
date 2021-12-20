@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelapp/screens/home_screen/tour_carousel.dart';
 import 'package:travelapp/screens/home_screen/hotel_carousel.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:travelapp/screens/login_screen/login_screen.dart';
 import 'package:travelapp/screens/profile_screen/profile_screen.dart';
+import 'package:travelapp/services/user_services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,8 +16,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var firebaseAuth = AuthenticationService(FirebaseAuth.instance);
+
   int _selectedIndex = 0;
   int _currentTab = 0;
+
+  void onSignOut() {
+    firebaseAuth.SignOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +43,15 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Row(
-                  children: const [
-                    Image(image: AssetImage('assets/images/icon-menu.png')),
-                    SizedBox(width: 10),
-                    Text(
+                  children: [
+                    // temporary function for testing purposes
+                    InkWell(
+                      onTap: onSignOut,
+                      child: const Image(
+                          image: AssetImage('assets/images/icon-menu.png')),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text(
                       "Hello, User",
                       style: TextStyle(
                         fontSize: 18,

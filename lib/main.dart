@@ -1,23 +1,27 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:travelapp/screens/home_screen/home_screen.dart';
 import 'package:travelapp/screens/login_screen/login_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
     ),
   );
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  final firebaseAuth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,7 +32,9 @@ class MyApp extends StatelessWidget {
         accentColor: const Color(0xFFD8ECF1),
         scaffoldBackgroundColor: const Color(0xFFf9f9f9),
       ),
-      home: LoginScreen(),
+      home: firebaseAuth.currentUser == null
+          ? LoginScreen()
+          : HomeScreen(),
     );
   }
 }

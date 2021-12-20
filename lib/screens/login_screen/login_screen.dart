@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travelapp/screens/home_screen/home_screen.dart';
 import 'package:travelapp/screens/login_screen/signup_screen.dart';
+import 'package:travelapp/services/user_services.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -11,6 +14,34 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  var firebaseAuth = AuthenticationService(FirebaseAuth.instance);
+
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  var isPasswordHidden = true;
+
+  void onLogIn() async {
+    var email = emailController.text;
+    var password = passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      print("empty");
+      return;
+    }
+
+    bool result = await firebaseAuth.LogIn(
+      emailController.text, passwordController.text,
+    );
+
+    if (result) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    }
+    else {
+      print("login failed");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,14 +76,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.white.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(30),
                 ),
-                child: const TextField(
+                child: TextField(
+                  controller: emailController,
                   textAlignVertical: TextAlignVertical.center,
                   keyboardType: TextInputType.emailAddress,
                   cursorColor: Colors.black,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                   ),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: "Email",
                     prefixIcon: Icon(
@@ -71,21 +103,36 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.white.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(30),
                 ),
-                child: const TextField(
+                child: TextField(
+                  controller: passwordController,
                   textAlignVertical: TextAlignVertical.center,
                   keyboardType: TextInputType.visiblePassword,
-                  obscureText: true,
+                  obscureText: isPasswordHidden,
                   cursorColor: Colors.black,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                   ),
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: "Password",
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       FontAwesomeIcons.lock,
                       size: 20,
                       color: Colors.black54,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordHidden
+                            ? FontAwesomeIcons.eyeSlash
+                            : FontAwesomeIcons.eye,
+                        size: 20,
+                        color: Colors.black54,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordHidden = !isPasswordHidden;
+                        });
+                      },
                     ),
                   ),
                 ),
@@ -106,19 +153,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: const Center(
-                  child: Text(
-                    "LOGIN",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
+              InkWell(
+                onTap: onLogIn,
+                child: Container(
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "LOGIN",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
