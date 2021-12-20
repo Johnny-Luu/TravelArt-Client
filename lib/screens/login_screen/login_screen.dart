@@ -25,19 +25,20 @@ class _LoginScreenState extends State<LoginScreen> {
     var password = passwordController.text;
 
     if (email.isEmpty || password.isEmpty) {
+      // TODO: HANDLE EMPTY FIELDS HERE
       print("empty");
       return;
     }
 
-    bool result = await firebaseAuth.LogIn(
-      emailController.text, passwordController.text,
-    );
+    bool result = await firebaseAuth.LogIn(email, password);
 
     if (result) {
+      // TODO: HANDLE LOGIN SUCCESSFUL HERE
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
     else {
+      // TODO: HANDLE LOGIN FAILED HERE
       print("login failed");
     }
   }
