@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:travelapp/models/destination_model.dart';
+import 'package:travelapp/models/tour_model.dart';
 import 'package:travelapp/screens/detail_screen/tour_detail_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TourCarousel extends StatelessWidget {
-  TourCarousel({Key? key}) : super(key: key);
+  final List<Tour> tourList;
+  TourCarousel({Key? key, required this.tourList}) : super(key: key);
 
   final PageController listController = PageController();
 
@@ -42,26 +45,27 @@ class TourCarousel extends StatelessWidget {
           ),
         ),
         Container(
-          height: 300.0,
+          height: 320.0,
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
             controller: listController,
             scrollDirection: Axis.horizontal,
-            itemCount: destinations.length,
+            itemCount: tourList.length,
             itemBuilder: (BuildContext context, int index) {
-              Destination destination = destinations[index];
+              Tour tour = tourList[index];
               return GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => TourDetailScreen(
-                      destination: destination,
-                    ),
-                  ),
-                ),
+                // onTap: () => Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (_) => TourDetailScreen(
+                //       destination: destination,
+                //     ),
+                //   ),
+                // ),
+                // main container
                 child: Container(
                   margin: const EdgeInsets.all(10.0),
-                  width: 210.0,
+                  width: 240.0,
                   child: Stack(
                     alignment: Alignment.topCenter,
                     children: <Widget>[
@@ -69,7 +73,7 @@ class TourCarousel extends StatelessWidget {
                         bottom: 15.0,
                         child: Container(
                           height: 120.0,
-                          width: 200.0,
+                          width: 240.0,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10.0),
@@ -81,7 +85,7 @@ class TourCarousel extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  '${destination.activities.length} activities',
+                                  '${tour.destinationIDs.length ~/ 2 + 1} locations',
                                   style: const TextStyle(
                                     fontSize: 22.0,
                                     fontWeight: FontWeight.w600,
@@ -89,7 +93,9 @@ class TourCarousel extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  destination.description,
+                                  tour.description,
+                                  maxLines: 4,
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     color: Colors.grey,
                                   ),
@@ -114,13 +120,14 @@ class TourCarousel extends StatelessWidget {
                         child: Stack(
                           children: <Widget>[
                             Hero(
-                              tag: destination.imageUrl,
+                              tag: tour.id,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
                                 child: Image(
                                   height: 180.0,
-                                  width: 180.0,
-                                  image: AssetImage(destination.imageUrl),
+                                  width: 200.0,
+                                  image: Image.memory(base64Decode(tour.img))
+                                      .image,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -132,7 +139,7 @@ class TourCarousel extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    destination.city,
+                                    tour.name,
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 24.0,
@@ -143,13 +150,13 @@ class TourCarousel extends StatelessWidget {
                                   Row(
                                     children: <Widget>[
                                       const Icon(
-                                        FontAwesomeIcons.locationArrow,
-                                        size: 10.0,
+                                        FontAwesomeIcons.dollarSign,
+                                        size: 12.0,
                                         color: Colors.white,
                                       ),
-                                      const SizedBox(width: 5.0),
+                                      const SizedBox(width: 2.0),
                                       Text(
-                                        destination.country,
+                                        tour.price,
                                         style: const TextStyle(
                                           color: Colors.white,
                                         ),
@@ -170,16 +177,15 @@ class TourCarousel extends StatelessWidget {
           ),
         ),
         SmoothPageIndicator(
-          controller: listController,
-          count: (destinations.length/2).round(),
-          effect: const ExpandingDotsEffect(
-            activeDotColor: Color(0xFF8a8a8a),
-            dotColor: Color(0xFFababab),
-            dotHeight: 4.8,
-            dotWidth: 6,
-            spacing: 4.8,
-          )
-        )
+            controller: listController,
+            count: tourList.isNotEmpty ? (tourList.length - 1).round() : 1,
+            effect: const ExpandingDotsEffect(
+              activeDotColor: Color(0xFF8a8a8a),
+              dotColor: Color(0xFFababab),
+              dotHeight: 4.8,
+              dotWidth: 6,
+              spacing: 4.8,
+            ))
       ],
     );
   }
