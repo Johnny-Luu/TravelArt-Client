@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelapp/models/activity_model.dart';
+import 'package:travelapp/models/destination_model.dart';
 
-Widget PlanningItem(Activity activity, BuildContext context) {
+Widget PlanningItem(Destination destination, int index) {
+  Image tourImg = Image.memory(base64Decode(destination.img));
+  
   return Stack(
     children: <Widget>[
       Container(
@@ -20,7 +25,7 @@ Widget PlanningItem(Activity activity, BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                activity.name,
+                destination.name,
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w600,
@@ -29,11 +34,11 @@ Widget PlanningItem(Activity activity, BuildContext context) {
                 maxLines: 2,
               ),
               const SizedBox(height: 5.0),
-              const Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sollicitudin sed ligula vel rutrum. Nulla facilisi. Mauris neque urna, imperdiet nec felis a, varius rutrum neque. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris blandit, arcu eu tristique bibendum, ante odio tristique nibh, ut pulvinar sem augue quis neque. Pellentesque elementum purus id orci interdum, eget lobortis urna mollis. Donec a massa consectetur, fringilla augue in, pellentesque libero.",
+              Text(
+                destination.description,
                 maxLines: 5,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.grey,
                 ),
               ),
@@ -52,16 +57,14 @@ Widget PlanningItem(Activity activity, BuildContext context) {
               Image(
                 width: 110.0,
                 height: 200.0,
-                image: AssetImage(
-                  activity.imageUrl,
-                ),
+                image: tourImg.image,
                 fit: BoxFit.cover,
               ),
               Positioned(
                 top: 0,
                 left: -20,
                 child: Text(
-                  "1",
+                  index.toString(),
                   style: GoogleFonts.playfairDisplay(
                     color: Colors.white.withOpacity(0.8),
                     fontSize: 160.0,

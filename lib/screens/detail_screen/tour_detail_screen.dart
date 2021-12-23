@@ -7,6 +7,7 @@ import 'package:travelapp/models/destination_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travelapp/models/tour_model.dart';
 import 'package:travelapp/screens/detail_screen/rating_tab.dart';
+import 'package:travelapp/services/destination_services.dart';
 import 'package:travelapp/widgets/comment_item.dart';
 import 'package:travelapp/widgets/planning_item.dart';
 
@@ -16,7 +17,8 @@ class TourDetailScreen extends StatefulWidget {
   final Tour tour;
   final Image tourImg;
 
-  const TourDetailScreen({Key? key, required this.tour, required this.tourImg}) : super(key: key);
+  const TourDetailScreen({Key? key, required this.tour, required this.tourImg})
+      : super(key: key);
 
   @override
   _TourDetailScreenState createState() => _TourDetailScreenState();
@@ -25,10 +27,23 @@ class TourDetailScreen extends StatefulWidget {
 class _TourDetailScreenState extends State<TourDetailScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  var destinationService = DestinationService();
+  List<Destination> destinations = [];
+  String province = '';
+
+  void loadDestinations() async {
+    for (var des in widget.tour.destinationIDList) {
+      var destination = await destinationService.getDestinationById(des);
+      destinations.add(destination);
+    }
+    province = destinations[0].province;
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
+    loadDestinations();
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -111,8 +126,9 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                         color: Colors.white.withOpacity(0.8),
                       ),
                     ),
+                    const SizedBox(height: 2.0),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Icon(
                           FontAwesomeIcons.locationArrow,
@@ -121,7 +137,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                         ),
                         const SizedBox(width: 5.0),
                         Text(
-                          "Temp province",
+                          province,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15.0,
@@ -168,17 +184,18 @@ class _TourDetailScreenState extends State<TourDetailScreen>
               children: [
                 // description section
                 DetailTab(tour: widget.tour),
-                Text("data"),
                 // planning section
-                // ListView.builder(
-                //   physics: const BouncingScrollPhysics(),
-                //   padding: const EdgeInsets.all(15.0),
-                //   itemCount: widget.tour.destinationIDs.length ~/ 2 + 1,
-                //   itemBuilder: (BuildContext context, int index) {
-                //     Activity activity = widget.destination.activities[index];
-                //     return PlanningItem(activity, context);
-                //   },
-                // ),
+                destinations.isNotEmpty
+                    ? ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.all(15.0),
+                        itemCount: widget.tour.destinationIDList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Destination destination = destinations[index];
+                          return PlanningItem(destination, index + 1);
+                        },
+                      )
+                    : const Center(child: Text("No destination")),
                 // rating section
                 RatingTab(),
               ],
