@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelapp/models/activity_model.dart';
 import 'package:travelapp/models/destination_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:travelapp/models/tour_model.dart';
 import 'package:travelapp/screens/detail_screen/rating_tab.dart';
 import 'package:travelapp/widgets/comment_item.dart';
 import 'package:travelapp/widgets/planning_item.dart';
@@ -10,10 +13,10 @@ import 'package:travelapp/widgets/planning_item.dart';
 import 'detail_tab.dart';
 
 class TourDetailScreen extends StatefulWidget {
-  final Destination destination;
+  final Tour tour;
+  final Image tourImg;
 
-  const TourDetailScreen({Key? key, required this.destination})
-      : super(key: key);
+  const TourDetailScreen({Key? key, required this.tour, required this.tourImg}) : super(key: key);
 
   @override
   _TourDetailScreenState createState() => _TourDetailScreenState();
@@ -50,11 +53,11 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                   ],
                 ),
                 child: Hero(
-                  tag: widget.destination.imageUrl,
+                  tag: widget.tour.id,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(30.0),
                     child: Image(
-                      image: AssetImage(widget.destination.imageUrl),
+                      image: widget.tourImg.image,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -100,7 +103,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      widget.destination.city,
+                      widget.tour.name,
                       style: GoogleFonts.playfairDisplay(
                         fontSize: 40,
                         fontWeight: FontWeight.w700,
@@ -118,7 +121,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                         ),
                         const SizedBox(width: 5.0),
                         Text(
-                          widget.destination.country,
+                          "Temp province",
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15.0,
@@ -164,17 +167,18 @@ class _TourDetailScreenState extends State<TourDetailScreen>
               controller: _tabController,
               children: [
                 // description section
-                DetailTab(context),
+                DetailTab(tour: widget.tour),
+                Text("data"),
                 // planning section
-                ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.all(15.0),
-                  itemCount: widget.destination.activities.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Activity activity = widget.destination.activities[index];
-                    return PlanningItem(activity, context);
-                  },
-                ),
+                // ListView.builder(
+                //   physics: const BouncingScrollPhysics(),
+                //   padding: const EdgeInsets.all(15.0),
+                //   itemCount: widget.tour.destinationIDs.length ~/ 2 + 1,
+                //   itemBuilder: (BuildContext context, int index) {
+                //     Activity activity = widget.destination.activities[index];
+                //     return PlanningItem(activity, context);
+                //   },
+                // ),
                 // rating section
                 RatingTab(),
               ],

@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:travelapp/models/tour_model.dart';
 import 'package:travelapp/screens/detail_screen/tour_detail_screen.dart';
@@ -11,6 +11,7 @@ class TourCarousel extends StatelessWidget {
   TourCarousel({Key? key, required this.tourList}) : super(key: key);
 
   final PageController listController = PageController();
+  final formatCurrency = NumberFormat("#,###");
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +54,17 @@ class TourCarousel extends StatelessWidget {
             itemCount: tourList.length,
             itemBuilder: (BuildContext context, int index) {
               Tour tour = tourList[index];
+              Image tourImg = Image.memory(base64Decode(tour.img));
               return GestureDetector(
-                // onTap: () => Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (_) => TourDetailScreen(
-                //       destination: destination,
-                //     ),
-                //   ),
-                // ),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => TourDetailScreen(
+                      tour: tour,
+                      tourImg: tourImg,
+                    ),
+                  ),
+                ),
                 // main container
                 child: Container(
                   margin: const EdgeInsets.all(10.0),
@@ -85,7 +88,7 @@ class TourCarousel extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  '${tour.destinationIDs.length ~/ 2 + 1} locations',
+                                  '${tour.destinationIDList.length} locations',
                                   style: const TextStyle(
                                     fontSize: 22.0,
                                     fontWeight: FontWeight.w600,
@@ -126,8 +129,7 @@ class TourCarousel extends StatelessWidget {
                                 child: Image(
                                   height: 180.0,
                                   width: 200.0,
-                                  image: Image.memory(base64Decode(tour.img))
-                                      .image,
+                                  image: tourImg.image,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -156,7 +158,7 @@ class TourCarousel extends StatelessWidget {
                                       ),
                                       const SizedBox(width: 2.0),
                                       Text(
-                                        tour.price,
+                                        formatCurrency.format(int.parse(tour.price)),
                                         style: const TextStyle(
                                           color: Colors.white,
                                         ),
