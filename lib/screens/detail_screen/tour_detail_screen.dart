@@ -197,7 +197,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                       )
                     : const Center(child: Text("No destination")),
                 // rating section
-                RatingTab(),
+                RatingTab(tour: widget.tour),
               ],
             ),
           ),

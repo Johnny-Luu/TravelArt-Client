@@ -1,6 +1,17 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:travelapp/models/comment_model.dart';
+import 'package:travelapp/models/customer_model.dart';
 
-Widget CommentItem(BuildContext context) {
+Widget CommentItem(BuildContext context, Customer customer, Comment comment) {
+  String displayRating() {
+    String rating = '';
+    for (int i = 0; i < comment.rating; i++) {
+      rating += '⭐';
+    }
+    return rating;
+  }
+
   return Container(
     width: MediaQuery.of(context).size.width,
     padding: const EdgeInsets.all(10.0),
@@ -10,9 +21,9 @@ Widget CommentItem(BuildContext context) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // circle avatar
-            const CircleAvatar(
-              radius: 26,
-              backgroundImage: AssetImage('assets/images/newyork.jpg'),
+            CircleAvatar(
+              radius: 26.0,
+              backgroundImage: MemoryImage(base64Decode(customer.avatar)),
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -21,17 +32,17 @@ Widget CommentItem(BuildContext context) {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
-                        "Johnny Luu",
-                        style: TextStyle(
+                        customer.name,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        "12 Dec, 2021",
-                        style: TextStyle(
+                        comment.time,
+                        style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
                           fontStyle: FontStyle.italic,
@@ -40,10 +51,9 @@ Widget CommentItem(BuildContext context) {
                     ],
                   ),
                   const SizedBox(height: 2),
-                  const Text("⭐⭐⭐⭐⭐"),
+                  Text(displayRating()),
                   const SizedBox(height: 6),
-                  const Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quis orci ut ex imperdiet ultricies et vehicula tellus. In hac habitasse platea dictumst. Etiam vitae neque in libero cursus ultrices eu et sem. "),
+                  Text(comment.comment),
                 ],
               ),
             ),
