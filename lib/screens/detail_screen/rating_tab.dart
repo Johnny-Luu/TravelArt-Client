@@ -28,11 +28,42 @@ class _RatingTabState extends State<RatingTab> {
   var ratingThree = 0;
   var ratingFour = 0;
   var ratingFive = 0;
-  
+
   final customerService = CustomerService();
   List<Customer> customers = [];
 
+  void onSubmitComment(Comment comment) async {
+    customerService.submitComment(widget.tour.id, comment);
+    setState(() {
+      bool isExist = false;
+      for (var element in widget.tour.ratingList) {
+        if (element.customerId == comment.customerId) {
+          element.comment = comment.comment;
+          element.rating = comment.rating;
+          element.time = comment.time;
+          isExist = true;
+        }
+      }
+      
+      if (!isExist) {
+        widget.tour.ratingList.add(comment);
+      }
+      
+      loadData();
+    });
+  }
+
   void loadData() async {
+    ratingPoint = 0.0;
+    countRating = 0;
+    ratingOne = 0;
+    ratingTwo = 0;
+    ratingThree = 0;
+    ratingFour = 0;
+    ratingFive = 0;
+
+    customers.clear();
+
     for (var comment in widget.tour.ratingList) {
       var customer = await customerService.getCustomerById(comment.customerId);
       customers.add(customer);
@@ -127,23 +158,25 @@ class _RatingTabState extends State<RatingTab> {
             ],
           ),
           customers.isNotEmpty
-          ? ListView.builder(
-            shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
-            padding: const EdgeInsets.all(10.0),
-            itemCount: widget.tour.ratingList.length,
-            itemBuilder: (BuildContext context, int index) {
-              int reverseIndex = widget.tour.ratingList.length - index - 1;
-              Comment comment = widget.tour.ratingList[reverseIndex];
-              Customer customer = customers[reverseIndex];
-              return CommentItem(context, customer, comment);
-            },
-          )
-          : const Center(
-            child: Text(
-              'No comment yet'
-            ),
-          ),
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  padding: const EdgeInsets.all(10.0),
+                  itemCount: widget.tour.ratingList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    int reverseIndex =
+                        widget.tour.ratingList.length - index - 1;
+                    Comment comment = widget.tour.ratingList[reverseIndex];
+                    Customer customer = customers[reverseIndex];
+                    return CommentItem(context, customer, comment);
+                  },
+                )
+              : Center(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 20.0),
+                    child: const Text('No comment yet'),
+                  ),
+                ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -167,7 +200,8 @@ class _RatingTabState extends State<RatingTab> {
                   child: Padding(
                     padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: RatingBottomSheet(),
+                    child: RatingBottomSheet(
+                        callbackSubmitComment: onSubmitComment),
                   ),
                 );
               });

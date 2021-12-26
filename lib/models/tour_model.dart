@@ -34,9 +34,11 @@ class Tour {
         price: json["Price"],
         profit: json["Profit"],
         ratingList: List<Comment>.from(
-          json["RatingList"].map(
+          json["RatingList"] != null
+          ? json["RatingList"].map(
             (x) => Comment.fromJson(x),
-          ),
+          )
+          : [],
         ),
         status: json["Status"],
       );

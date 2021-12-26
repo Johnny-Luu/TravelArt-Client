@@ -39,6 +39,7 @@ dependencies:
   smooth_star_rating: ^1.1.1
   google_fonts: ^2.1.0
   intl: ^0.17.0
+  date_format: ^2.0.4
 
   firebase_core: ^1.10.6
   firebase_auth: ^3.3.4
