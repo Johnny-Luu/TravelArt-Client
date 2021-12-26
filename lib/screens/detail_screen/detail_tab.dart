@@ -194,7 +194,7 @@ class DetailTab extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChooseTourGroupScreen(),
+              builder: (context) => ChooseTourGroupScreen(tour: tour),
             ),
           );
         },

@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travelapp/models/tour_model.dart';
+import 'package:travelapp/models/tourgroup_model.dart';
+import 'package:travelapp/services/tourgroup_services.dart';
 import 'package:travelapp/widgets/tourgroup_item.dart';
 
 class ChooseTourGroupScreen extends StatefulWidget {
-  ChooseTourGroupScreen({Key? key}) : super(key: key);
+  final Tour tour;
+
+  ChooseTourGroupScreen({Key? key, required this.tour}) : super(key: key);
 
   @override
   _ChooseTourGroupState createState() => _ChooseTourGroupState();
 }
 
 class _ChooseTourGroupState extends State<ChooseTourGroupScreen> {
+  final tourGroupService = TourGroupService();
+  List<TourGroup> tourGroups = [];
+
+  void loadTourGroups() async {
+    tourGroups =
+        await tourGroupService.getCurrentTourGroupsByTour(widget.tour.id);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadTourGroups();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,13 +78,29 @@ class _ChooseTourGroupState extends State<ChooseTourGroupScreen> {
                         ),
                       ),
                       const SizedBox(height: 20.0),
-                      ListView.builder(
+                      tourGroups.isNotEmpty
+                      ? ListView.builder(
                         shrinkWrap: true,
                         physics: const ClampingScrollPhysics(),
-                        itemCount: 5,
+                        itemCount: tourGroups.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return TourGroupItem();
+                          return TourGroupItem(
+                            tourGroup: tourGroups[index],
+                            image: widget.tour.img,
+                          );
                         },
+                      )
+                      : Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 30.0),
+                          child: Text(
+                            'No groups available!',
+                            style: GoogleFonts.playfairDisplay(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),

@@ -37,6 +37,26 @@ class TourGroupService {
     return tourGroups;
   }
 
+  Future<List<TourGroup>> getCurrentTourGroupsByTour(String tourId) async {
+    List<TourGroup> tourGroups = [];
+    DateTime now = DateTime.now();
+
+    Query query =
+        dbRef.child('TourGroup').orderByChild('TourId').equalTo(tourId);
+
+    await query.once().then((event) {
+      var jsonList = event.snapshot.value as Map<dynamic, dynamic>;
+      var keys = jsonList.keys;
+      for (var key in keys) {
+        if (jsonList[key]["Id"] != "-1" && DateTime.parse(jsonList[key]["StartDate"]).isAfter(now)) {
+          tourGroups.add(TourGroup.fromJson(jsonList[key]));
+        }
+      }
+    });
+
+    return tourGroups;
+  }
+
   Future<bool> checkAttendance(String tourId, String customerId) async {
     bool isAttend = false;
     List<TourGroup> tourGroups = [];

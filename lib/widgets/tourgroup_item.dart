@@ -1,9 +1,20 @@
+import 'dart:convert';
+
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travelapp/models/tourgroup_model.dart';
 import 'package:travelapp/screens/confirm_info_screen/confirm_info_screen.dart';
 
 class TourGroupItem extends StatelessWidget {
-  const TourGroupItem({Key? key}) : super(key: key);
+  final TourGroup tourGroup;
+  final String image;
+
+  const TourGroupItem({
+    Key? key,
+    required this.tourGroup,
+    required this.image,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +36,9 @@ class TourGroupItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Text(
-                    "Gondola winter 2021",
-                    style: TextStyle(
+                  Text(
+                    tourGroup.name,
+                    style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w600,
                     ),
@@ -37,25 +48,31 @@ class TourGroupItem extends StatelessWidget {
                   const SizedBox(height: 5.0),
                   // start & end date
                   Row(
-                    children: const [
+                    children: [
                       Text(
-                        "12/12/2021",
-                        style: TextStyle(
+                        formatDate(
+                          tourGroup.startDate,
+                          [dd, '/', mm, '/', yyyy],
+                        ),
+                        style: const TextStyle(
                           fontSize: 14.0,
                           color: Colors.grey,
                         ),
                       ),
-                      SizedBox(width: 4.0),
-                      Image(
+                      const SizedBox(width: 4.0),
+                      const Image(
                         width: 18.0,
                         image: AssetImage(
                           "assets/images/icon-paper-plane.png",
                         ),
                       ),
-                      SizedBox(width: 6.0),
+                      const SizedBox(width: 6.0),
                       Text(
-                        "22/12/2021",
-                        style: TextStyle(
+                        formatDate(
+                          tourGroup.endDate,
+                          [dd, '/', mm, '/', yyyy],
+                        ),
+                        style: const TextStyle(
                           fontSize: 14.0,
                           color: Colors.grey,
                         ),
@@ -65,17 +82,17 @@ class TourGroupItem extends StatelessWidget {
                   const SizedBox(height: 10.0),
                   // tour guide
                   Row(
-                    children: const [
-                      Image(
+                    children: [
+                      const Image(
                         width: 18.0,
                         image: AssetImage(
                           "assets/images/icon-tourist-guide.png",
                         ),
                       ),
-                      SizedBox(width: 4.0),
+                      const SizedBox(width: 4.0),
                       Text(
-                        "La Thanh H",
-                        style: TextStyle(
+                        tourGroup.tourLeaderName,
+                        style: const TextStyle(
                           fontSize: 14.0,
                           color: Colors.grey,
                         ),
@@ -85,17 +102,17 @@ class TourGroupItem extends StatelessWidget {
                   const SizedBox(height: 5.0),
                   // tour deputy
                   Row(
-                    children: const [
-                      Image(
+                    children: [
+                      const Image(
                         width: 18.0,
                         image: AssetImage(
                           "assets/images/icon-hat.png",
                         ),
                       ),
-                      SizedBox(width: 4.0),
+                      const SizedBox(width: 4.0),
                       Text(
-                        "Pham Nguyen Thanh T",
-                        style: TextStyle(
+                        tourGroup.tourDeputyName,
+                        style: const TextStyle(
                           fontSize: 14.0,
                           color: Colors.grey,
                         ),
@@ -113,10 +130,10 @@ class TourGroupItem extends StatelessWidget {
             bottom: 15.0,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
-              child: const Image(
+              child: Image(
                 width: 110.0,
                 height: 200.0,
-                image: AssetImage("assets/images/gondola.jpg"),
+                image: Image.memory(base64Decode(image)).image,
                 fit: BoxFit.cover,
               ),
             ),
@@ -169,7 +186,7 @@ class TourGroupItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "3/",
+                  tourGroup.customerListSplited.length.toString() + "/",
                   style: GoogleFonts.roboto(
                     fontSize: 22.0,
                     fontWeight: FontWeight.w600,
@@ -177,7 +194,7 @@ class TourGroupItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "25",
+                  tourGroup.slot.toString(),
                   style: GoogleFonts.roboto(
                     fontSize: 14.0,
                     color: Colors.green,
