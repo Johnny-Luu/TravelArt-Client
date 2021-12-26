@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -6,6 +7,7 @@ import 'package:travelapp/models/customer_model.dart';
 import 'package:travelapp/models/tour_model.dart';
 import 'package:travelapp/screens/detail_screen/rating_bottom_sheet.dart';
 import 'package:travelapp/services/customer_services.dart';
+import 'package:travelapp/services/tourgroup_services.dart';
 import 'package:travelapp/widgets/comment_item.dart';
 
 class RatingTab extends StatefulWidget {
@@ -28,9 +30,23 @@ class _RatingTabState extends State<RatingTab> {
   var ratingThree = 0;
   var ratingFour = 0;
   var ratingFive = 0;
+  bool canComment = false;
 
+  final firebaseAuth = FirebaseAuth.instance;
+  final tourGroupService = TourGroupService();
   final customerService = CustomerService();
   List<Customer> customers = [];
+
+  void checkCanComment() async {
+    // get current customer
+    final currentUser = firebaseAuth.currentUser;
+    final customer =
+        await customerService.getCustomerByEmail(currentUser?.email);
+
+    canComment = await tourGroupService.checkAttendance(widget.tour.id, customer.id);
+    
+    setState(() {});
+  }
 
   void onSubmitComment(Comment comment) async {
     customerService.submitComment(widget.tour.id, comment);
@@ -44,11 +60,11 @@ class _RatingTabState extends State<RatingTab> {
           isExist = true;
         }
       }
-      
+
       if (!isExist) {
         widget.tour.ratingList.add(comment);
       }
-      
+
       loadData();
     });
   }
@@ -100,6 +116,7 @@ class _RatingTabState extends State<RatingTab> {
   void initState() {
     super.initState();
     loadData();
+    checkCanComment();
   }
 
   @override
@@ -179,7 +196,8 @@ class _RatingTabState extends State<RatingTab> {
                 ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: canComment
+      ? FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
         child: const Image(
           color: Colors.white,
@@ -206,7 +224,8 @@ class _RatingTabState extends State<RatingTab> {
                 );
               });
         },
-      ),
+      )
+      : Container(),
     );
   }
 }
