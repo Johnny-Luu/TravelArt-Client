@@ -147,7 +147,7 @@ class TourGroupItem extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ConfirmInfoScreen(),
+                    builder: (context) => ConfirmInfoScreen(tourId: tourGroup.id),
                   ),
                 );
               },

@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:travelapp/models/comment_model.dart';
 import 'package:travelapp/models/customer_model.dart';
+import 'package:travelapp/models/request_model.dart';
 
 class CustomerService {
   final dbRef = FirebaseDatabase.instance.ref();
@@ -71,5 +72,18 @@ class CustomerService {
     });
 
     dbRef.child('Tour/$tourId/RatingList/$commentId').set(comment.toJson());
+  }
+
+  void submitRequest(Request request) async {
+    String requestId = "0";
+    await dbRef.child('Request').once().then((event) {
+      var jsonList = event.snapshot.value as List;
+
+      if (jsonList != null) {
+        requestId = jsonList.length.toString();
+      }
+    });
+
+    dbRef.child('Request/$requestId').set(request.toJson(requestId));
   }
 }
