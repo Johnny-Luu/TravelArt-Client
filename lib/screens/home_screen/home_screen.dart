@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travelapp/models/customer_model.dart';
 import 'package:travelapp/models/tour_model.dart';
 import 'package:travelapp/screens/home_screen/tour_carousel.dart';
 import 'package:travelapp/screens/home_screen/hotel_carousel.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travelapp/screens/login_screen/login_screen.dart';
 import 'package:travelapp/screens/profile_screen/profile_screen.dart';
+import 'package:travelapp/services/customer_services.dart';
 import 'package:travelapp/services/tour_services.dart';
 import 'package:travelapp/services/user_services.dart';
 
@@ -18,22 +22,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var firebaseAuth = AuthenticationService(FirebaseAuth.instance);
+  final firebaseAuth = FirebaseAuth.instance;
   var tourServices = TourService();
   List<Tour> tourList = [];
+
+  final customerService = CustomerService();
+  Customer? customer;
 
   int _selectedIndex = 0;
   int _currentTab = 0;
 
-  void loadTours() async {
+  void loadData() async {
     tourList = await tourServices.getAllTours();
+
+    customer = await customerService
+        .getCustomerByEmail(firebaseAuth.currentUser?.email);
+
     setState(() {});
+  }
+
+  void updateAvatar(String avatar) {
+    setState(() {
+      customer?.avatar = avatar;
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    loadTours();
+    loadData();
   }
 
   @override
@@ -53,9 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <Widget>[
                 Row(
                   children: const [
-                    // temporary function for testing purposes
-                    Image(
-                        image: AssetImage('assets/images/icon-menu.png')),
+                    Image(image: AssetImage('assets/images/icon-menu.png')),
                     SizedBox(width: 10),
                     Text(
                       "Hello, User",
@@ -70,14 +85,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProfileScreen(),
+                        builder: (context) =>
+                            ProfileScreen(callbackUpdateAvatar: updateAvatar),
                       ),
                     );
                   },
-                  child: const CircleAvatar(
-                    radius: 20.0,
-                    backgroundImage:
-                        NetworkImage('http://i.imgur.com/zL4Krbz.jpg'),
+                  child: CircleAvatar(
+                    radius: 24.0,
+                    backgroundImage: customer != null
+                        ? MemoryImage(base64Decode(customer!.avatar))
+                        : null,
                   ),
                 ),
               ],

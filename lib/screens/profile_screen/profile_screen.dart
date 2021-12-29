@@ -1,17 +1,22 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:travelapp/models/customer_model.dart';
 import 'package:travelapp/screens/profile_screen/info_tab.dart';
 import 'package:travelapp/services/customer_services.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+  final Function callbackUpdateAvatar;
+
+  ProfileScreen({Key? key, required this.callbackUpdateAvatar})
+      : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -31,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   final customerService = CustomerService();
   final firebaseAuth = FirebaseAuth.instance;
   Customer? customer;
+  // File? pickedAvatar;
 
   void loadData() async {
     customer = await customerService
@@ -51,6 +57,26 @@ class _ProfileScreenState extends State<ProfileScreen>
       customer!.name = name;
       nameController.text = name;
     });
+  }
+
+  Future pickImage() async {
+    try {
+      final ImagePicker _picker = ImagePicker();
+      final img = await _picker.pickImage(source: ImageSource.gallery);
+
+      if (img == null) return;
+
+      final bytes = File(img.path).readAsBytesSync();
+      String img64 = base64Encode(bytes);
+      customerService.updateAvatar(customer!.id, img64);
+      widget.callbackUpdateAvatar(img64);
+
+      setState(() {
+        avatar = FileImage(File(img.path));
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -137,16 +163,19 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     ],
                   ),
-                  Container(
-                    width: 60,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white.withOpacity(0.3),
-                    ),
-                    child: const Image(
-                      image: AssetImage('assets/images/icon-camera.png'),
-                      color: Colors.white,
+                  InkWell(
+                    onTap: pickImage,
+                    child: Container(
+                      width: 60,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white.withOpacity(0.3),
+                      ),
+                      child: const Image(
+                        image: AssetImage('assets/images/icon-camera.png'),
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],

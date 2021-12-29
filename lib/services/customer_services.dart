@@ -94,4 +94,10 @@ class CustomerService {
       'Address': customer.address,
     });
   }
+
+  void updateAvatar(String customerId, String avatar) async {
+    dbRef.child('Customer/$customerId').update({
+      'Avatar': avatar,
+    });
+  }
 }
