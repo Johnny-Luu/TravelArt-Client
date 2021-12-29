@@ -192,7 +192,10 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                         itemCount: widget.tour.destinationIDList.length,
                         itemBuilder: (BuildContext context, int index) {
                           Destination destination = destinations[index];
-                          return PlanningItem(destination, index + 1);
+                          return PlanningItem(
+                            destination: destination,
+                            index: index + 1,
+                          );
                         },
                       )
                     : const Center(child: Text("No destination")),
