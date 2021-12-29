@@ -1,6 +1,14 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:convert';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travelapp/models/customer_model.dart';
+import 'package:travelapp/screens/profile_screen/info_tab.dart';
+import 'package:travelapp/services/customer_services.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key? key}) : super(key: key);
@@ -12,10 +20,43 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  var nameController = TextEditingController();
+  var emailController = TextEditingController();
+  var phoneController = TextEditingController();
+  var addressController = TextEditingController();
+  var isEditing = false;
+
+  ImageProvider? avatar;
+
+  final customerService = CustomerService();
+  final firebaseAuth = FirebaseAuth.instance;
+  Customer? customer;
+
+  void loadData() async {
+    customer = await customerService
+        .getCustomerByEmail(firebaseAuth.currentUser?.email);
+
+    nameController.text = customer!.name;
+    emailController.text = customer!.email;
+    phoneController.text = customer!.phone;
+    addressController.text = customer!.address;
+
+    avatar = MemoryImage(base64Decode(customer!.avatar));
+
+    setState(() {});
+  }
+
+  void updateName(String name) {
+    setState(() {
+      customer!.name = name;
+      nameController.text = name;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    loadData();
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -27,17 +68,23 @@ class _ProfileScreenState extends State<ProfileScreen>
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height / 2.5,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30),
               ),
               image: DecorationImage(
-                image: AssetImage('assets/images/img-avatar.jpg'),
+                image: avatar != null
+                    ? avatar!
+                    : const AssetImage('assets/images/img-avatar.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
             child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 10,
+              ),
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(30),
@@ -52,61 +99,57 @@ class _ProfileScreenState extends State<ProfileScreen>
                   ],
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Johnny Luu",
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          customer?.name ?? '',
                           style: GoogleFonts.playfairDisplay(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
-                        Row(
-                          children: const [
-                            Icon(
-                              FontAwesomeIcons.envelope,
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            FontAwesomeIcons.envelope,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            customer?.email ?? '',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300,
                               color: Colors.white,
-                              size: 16,
                             ),
-                            SizedBox(width: 5),
-                            Text(
-                              "testemail123@gmail.com",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Container(
-                      width: 60,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white.withOpacity(0.3),
+                          ),
+                        ],
                       ),
-                      child: const Image(
-                        image: AssetImage('assets/images/icon-camera.png'),
-                        color: Colors.white,
-                      ),
+                    ],
+                  ),
+                  Container(
+                    width: 60,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white.withOpacity(0.3),
                     ),
-                  ],
-                ),
+                    child: const Image(
+                      image: AssetImage('assets/images/icon-camera.png'),
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -142,179 +185,12 @@ class _ProfileScreenState extends State<ProfileScreen>
               controller: _tabController,
               children: [
                 // My info section
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 20,
-                  ),
-                  child: Column(
-                    children: [
-                      // edit button
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.pen,
-                            size: 24,
-                            color: Colors.blue[800],
-                          ),
-                        ],
-                      ),
-                      // name
-                      Row(
-                        children: [
-                          const Icon(
-                            FontAwesomeIcons.user,
-                            size: 16,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            'Name',
-                            style: GoogleFonts.playfairDisplay(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              enabled: false,
-                              style: TextStyle(fontSize: 18),
-                              decoration:
-                                  InputDecoration(border: InputBorder.none),
-                            ),
-                          ),
-                        ],
-                      ),
-                      // email
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          const Icon(
-                            FontAwesomeIcons.envelope,
-                            size: 16,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            'Email',
-                            style: GoogleFonts.playfairDisplay(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              enabled: false,
-                              style: TextStyle(fontSize: 18),
-                              decoration:
-                                  InputDecoration(border: InputBorder.none),
-                            ),
-                          ),
-                        ],
-                      ),
-                      // phone
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          const Icon(
-                            FontAwesomeIcons.mobileAlt,
-                            size: 16,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            'Phone',
-                            style: GoogleFonts.playfairDisplay(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              enabled: false,
-                              style: TextStyle(fontSize: 18),
-                              decoration:
-                                  InputDecoration(border: InputBorder.none),
-                            ),
-                          ),
-                        ],
-                      ),
-                      // address
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.location_on_outlined,
-                            size: 22,
-                          ),
-                          Text(
-                            'Address',
-                            style: GoogleFonts.playfairDisplay(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              enabled: false,
-                              style: TextStyle(fontSize: 18),
-                              decoration:
-                                  InputDecoration(border: InputBorder.none),
-                            ),
-                          ),
-                        ],
-                      ),
-                      // buttons
-                      const Spacer(),
-                      Row(
-                        children: [
-                          Flexible(
-                            flex: 2,
-                            child: Container(
-                              height: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: Colors.blue[800],
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Confirm',
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Flexible(
-                            flex: 1,
-                            child: Container(
-                              height: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                border: Border.all(
-                                  color: Colors.blue[800]!,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Cancel',
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.blue[800],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                customer != null
+                    ? InfoTab(
+                        customer: customer,
+                        callbackUpdateName: updateName,
+                      )
+                    : SizedBox(),
                 Text("My Groups"),
               ],
             ),

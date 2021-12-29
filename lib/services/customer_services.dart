@@ -86,4 +86,12 @@ class CustomerService {
 
     dbRef.child('Request/$requestId').set(request.toJson(requestId));
   }
+
+  void updateInfo(Customer customer) async {
+    dbRef.child('Customer/${customer.id}').update({
+      'Name': customer.name,
+      'Phone': customer.phone,
+      'Address': customer.address,
+    });
+  }
 }

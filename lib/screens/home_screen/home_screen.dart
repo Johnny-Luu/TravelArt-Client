@@ -25,12 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   int _currentTab = 0;
 
-  void onSignOut() {
-    firebaseAuth.SignOut();
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
-  }
-
   void loadTours() async {
     tourList = await tourServices.getAllTours();
     setState(() {});
@@ -58,15 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Row(
-                  children: [
+                  children: const [
                     // temporary function for testing purposes
-                    InkWell(
-                      onTap: onSignOut,
-                      child: const Image(
-                          image: AssetImage('assets/images/icon-menu.png')),
-                    ),
-                    const SizedBox(width: 10),
-                    const Text(
+                    Image(
+                        image: AssetImage('assets/images/icon-menu.png')),
+                    SizedBox(width: 10),
+                    Text(
                       "Hello, User",
                       style: TextStyle(
                         fontSize: 18,

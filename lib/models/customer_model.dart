@@ -23,4 +23,13 @@ class Customer {
     phone: json["Phone"],
     address: json["Address"]
   );
+
+  toJson() => {
+    "Id": id,
+    "Avatar": avatar,
+    "Name": name,
+    "Email": email,
+    "Phone": phone,
+    "Address": address
+  };
 }
