@@ -43,8 +43,9 @@ class _RatingTabState extends State<RatingTab> {
     final customer =
         await customerService.getCustomerByEmail(currentUser?.email);
 
-    canComment = await tourGroupService.checkAttendance(widget.tour.id, customer.id);
-    
+    canComment =
+        await tourGroupService.checkAttendance(widget.tour.id, customer.id);
+
     setState(() {});
   }
 
@@ -178,13 +179,12 @@ class _RatingTabState extends State<RatingTab> {
               ? ListView.builder(
                   shrinkWrap: true,
                   physics: const ClampingScrollPhysics(),
+                  reverse: true,
                   padding: const EdgeInsets.all(10.0),
                   itemCount: widget.tour.ratingList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    int reverseIndex =
-                        widget.tour.ratingList.length - index - 1;
-                    Comment comment = widget.tour.ratingList[reverseIndex];
-                    Customer customer = customers[reverseIndex];
+                    Comment comment = widget.tour.ratingList[index];
+                    Customer customer = customers[index];
                     return CommentItem(context, customer, comment);
                   },
                 )
@@ -197,35 +197,35 @@ class _RatingTabState extends State<RatingTab> {
         ],
       ),
       floatingActionButton: canComment
-      ? FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        child: const Image(
-          color: Colors.white,
-          image: AssetImage('assets/images/icon-write.png'),
-        ),
-        onPressed: () {
-          showModalBottomSheet(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20.0),
-                ),
+          ? FloatingActionButton(
+              backgroundColor: Theme.of(context).primaryColor,
+              child: const Image(
+                color: Colors.white,
+                image: AssetImage('assets/images/icon-write.png'),
               ),
-              isScrollControlled: true,
-              context: context,
-              builder: (context) {
-                return Container(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: RatingBottomSheet(
-                        callbackSubmitComment: onSubmitComment),
-                  ),
-                );
-              });
-        },
-      )
-      : Container(),
+              onPressed: () {
+                showModalBottomSheet(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20.0),
+                      ),
+                    ),
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (context) {
+                      return Container(
+                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          child: RatingBottomSheet(
+                              callbackSubmitComment: onSubmitComment),
+                        ),
+                      );
+                    });
+              },
+            )
+          : Container(),
     );
   }
 }

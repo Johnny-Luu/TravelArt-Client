@@ -86,7 +86,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            ProfileScreen(callbackUpdateAvatar: updateAvatar),
+                            ProfileScreen(
+                              customer: customer!,
+                              callbackUpdateAvatar: updateAvatar
+                            ),
                       ),
                     );
                   },

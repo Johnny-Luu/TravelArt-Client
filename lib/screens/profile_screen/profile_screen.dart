@@ -13,9 +13,11 @@ import 'package:travelapp/screens/profile_screen/info_tab.dart';
 import 'package:travelapp/services/customer_services.dart';
 
 class ProfileScreen extends StatefulWidget {
+  final Customer customer;
   final Function callbackUpdateAvatar;
 
-  ProfileScreen({Key? key, required this.callbackUpdateAvatar})
+  ProfileScreen(
+      {Key? key, required this.callbackUpdateAvatar, required this.customer})
       : super(key: key);
 
   @override
@@ -26,35 +28,22 @@ class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   var nameController = TextEditingController();
-  var emailController = TextEditingController();
-  var phoneController = TextEditingController();
-  var addressController = TextEditingController();
-  var isEditing = false;
 
   ImageProvider? avatar;
 
   final customerService = CustomerService();
-  final firebaseAuth = FirebaseAuth.instance;
-  Customer? customer;
-  // File? pickedAvatar;
 
   void loadData() async {
-    customer = await customerService
-        .getCustomerByEmail(firebaseAuth.currentUser?.email);
+    nameController.text = widget.customer.name;
 
-    nameController.text = customer!.name;
-    emailController.text = customer!.email;
-    phoneController.text = customer!.phone;
-    addressController.text = customer!.address;
-
-    avatar = MemoryImage(base64Decode(customer!.avatar));
+    avatar = MemoryImage(base64Decode(widget.customer.avatar));
 
     setState(() {});
   }
 
   void updateName(String name) {
     setState(() {
-      customer!.name = name;
+      widget.customer.name = name;
       nameController.text = name;
     });
   }
@@ -68,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
       final bytes = File(img.path).readAsBytesSync();
       String img64 = base64Encode(bytes);
-      customerService.updateAvatar(customer!.id, img64);
+      customerService.updateAvatar(widget.customer.id, img64);
       widget.callbackUpdateAvatar(img64);
 
       setState(() {
@@ -135,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     children: [
                       Flexible(
                         child: Text(
-                          customer?.name ?? '',
+                          widget.customer.name,
                           style: GoogleFonts.playfairDisplay(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
@@ -152,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            customer?.email ?? '',
+                            widget.customer.email,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w300,
@@ -214,12 +203,10 @@ class _ProfileScreenState extends State<ProfileScreen>
               controller: _tabController,
               children: [
                 // My info section
-                customer != null
-                    ? InfoTab(
-                        customer: customer,
-                        callbackUpdateName: updateName,
-                      )
-                    : SizedBox(),
+                InfoTab(
+                  customer: widget.customer,
+                  callbackUpdateName: updateName,
+                ),
                 Text("My Groups"),
               ],
             ),
