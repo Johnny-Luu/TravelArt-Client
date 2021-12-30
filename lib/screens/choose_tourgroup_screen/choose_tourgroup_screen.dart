@@ -87,6 +87,7 @@ class _ChooseTourGroupState extends State<ChooseTourGroupScreen> {
                           return TourGroupItem(
                             tourGroup: tourGroups[index],
                             image: widget.tour.img,
+                            type: 1,
                           );
                         },
                       )

@@ -48,11 +48,23 @@ class TourGroupService {
       var jsonList = event.snapshot.value as Map<dynamic, dynamic>;
       var keys = jsonList.keys;
       for (var key in keys) {
-        if (jsonList[key]["Id"] != "-1" && DateTime.parse(jsonList[key]["StartDate"]).isAfter(now)) {
+        if (jsonList[key]["Id"] != "-1" &&
+            DateTime.parse(jsonList[key]["StartDate"]).isAfter(now)) {
           tourGroups.add(TourGroup.fromJson(jsonList[key]));
         }
       }
     });
+
+    return tourGroups;
+  }
+
+  Future<List<TourGroup>> getTourGroupsOfACustomer(String customerId) async {
+    List<TourGroup> tourGroups = [];
+    List<TourGroup> allTourGroups = await getAllTourGroups();
+
+    for (var element in allTourGroups) {
+      if (element.customerList.contains(customerId)) tourGroups.add(element);
+    }
 
     return tourGroups;
   }

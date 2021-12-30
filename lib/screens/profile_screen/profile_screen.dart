@@ -12,6 +12,8 @@ import 'package:travelapp/models/customer_model.dart';
 import 'package:travelapp/screens/profile_screen/info_tab.dart';
 import 'package:travelapp/services/customer_services.dart';
 
+import 'tourgroup_tab.dart';
+
 class ProfileScreen extends StatefulWidget {
   final Customer customer;
   final Function callbackUpdateAvatar;
@@ -207,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   customer: widget.customer,
                   callbackUpdateName: updateName,
                 ),
-                Text("My Groups"),
+                TourGroupTab(customer: widget.customer),
               ],
             ),
           ),

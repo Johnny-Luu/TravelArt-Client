@@ -9,11 +9,13 @@ import 'package:travelapp/screens/confirm_info_screen/confirm_info_screen.dart';
 class TourGroupItem extends StatelessWidget {
   final TourGroup tourGroup;
   final String image;
+  final int type;
 
   const TourGroupItem({
     Key? key,
     required this.tourGroup,
     required this.image,
+    required this.type,
   }) : super(key: key);
 
   @override
@@ -142,12 +144,14 @@ class TourGroupItem extends StatelessWidget {
           Positioned(
             right: 10.0,
             bottom: 0.0,
-            child: InkWell(
+            child: type == 1
+            ? InkWell(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ConfirmInfoScreen(tourId: tourGroup.id),
+                    builder: (context) =>
+                        ConfirmInfoScreen(tourId: tourGroup.id),
                   ),
                 );
               },
@@ -176,7 +180,35 @@ class TourGroupItem extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
+            )
+            : type == 2 
+            // joined button
+            ? Container(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 5.0,
+                  horizontal: 20.0,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset(1.0, 2.0),
+                      blurRadius: 3.0,
+                    ),
+                  ],
+                ),
+                child: Text(
+                  "Joined",
+                  style: GoogleFonts.roboto(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+            ) 
+            : Container(),
           ),
           // slot
           Positioned(

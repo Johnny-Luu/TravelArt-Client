@@ -16,4 +16,27 @@ class TourService {
     });
     return tours;
   }
+
+  Future<Tour> getTourById(String id) async {
+    Tour tours = Tour(
+      id: '-1',
+      img: '',
+      name: '',
+      description: '',
+      destinationIDs: '',
+      price: '',
+      profit: '',
+      ratingList: [],
+      status: 0,
+    );
+
+    await dbRef.child('Tour/$id').once().then((event) {
+      var json = event.snapshot.value as Map<dynamic, dynamic>;
+      if (json['Id'] != "-1") {
+        tours = Tour.fromJson(json);
+      }
+    });
+
+    return tours;
+  }
 }
