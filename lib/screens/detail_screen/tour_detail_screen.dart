@@ -57,9 +57,12 @@ class _TourDetailScreenState extends State<TourDetailScreen>
               // Main image
               Container(
                 height: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  boxShadow: const [
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                  boxShadow: [
                     BoxShadow(
                       color: Colors.black26,
                       offset: Offset(0.0, 2.0),

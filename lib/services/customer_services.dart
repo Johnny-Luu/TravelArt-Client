@@ -6,6 +6,30 @@ import 'package:travelapp/models/request_model.dart';
 class CustomerService {
   final dbRef = FirebaseDatabase.instance.ref();
 
+  Future<List<Customer>> getAllCustomers() async {
+    List<Customer> customers = [];
+    await dbRef.child('Customer').once().then((event) {
+      var jsonList = event.snapshot.value as List;
+      for (var element in jsonList) {
+        customers.add(Customer.fromJson(element));
+      }
+    });
+    return customers;
+  }
+
+  void createCustomer(String email) async {
+    var customerList = await getAllCustomers();
+    var id = customerList.length.toString();
+    await dbRef.child('Customer/$id').set({
+      'Id': id,
+      'Avatar': "",
+      'Name': "",
+      'Email': email,
+      'Phone': "",
+      'Address': "",
+    });
+  }
+
   Future<Customer> getCustomerById(String id) async {
     Customer customer = Customer(
       id: "-1",

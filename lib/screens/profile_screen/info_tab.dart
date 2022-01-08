@@ -265,7 +265,11 @@ class _InfoTabState extends State<InfoTab> {
                   height: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
-                    color: Colors.redAccent[100],
+                    color: Colors.transparent,
+                    border: Border.all(
+                      color: Colors.red,
+                      width: 1,
+                    ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -45,16 +45,23 @@ class _TourGroupTabState extends State<TourGroupTab> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        physics: const BouncingScrollPhysics(),
-        itemCount: tourGroups.length,
-        itemBuilder: (BuildContext context, int index) {
-          return TourGroupItem(
-            tourGroup: tourGroups[index],
-            image: tourMaps[tourGroups[index].tourId]!.img,
-            type: 2,
+    return tourGroups.isNotEmpty
+        ? ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            physics: const BouncingScrollPhysics(),
+            itemCount: tourGroups.length,
+            itemBuilder: (BuildContext context, int index) {
+              return TourGroupItem(
+                tourGroup: tourGroups[index],
+                image: tourMaps[tourGroups[index].tourId]!.img,
+                type: 2,
+              );
+            })
+        : const Center(
+            child: Text(
+              'Empty list!',
+              style: TextStyle(fontSize: 20),
+            ),
           );
-        });
   }
 }

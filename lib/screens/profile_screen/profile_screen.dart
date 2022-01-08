@@ -38,7 +38,9 @@ class _ProfileScreenState extends State<ProfileScreen>
   void loadData() async {
     nameController.text = widget.customer.name;
 
-    avatar = MemoryImage(base64Decode(widget.customer.avatar));
+    if (widget.customer.avatar.isNotEmpty) {
+      avatar = MemoryImage(base64Decode(widget.customer.avatar));
+    }
 
     setState(() {});
   }
@@ -95,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   image: DecorationImage(
                     image: avatar != null
                         ? avatar!
-                        : const AssetImage('assets/images/img-avatar.jpg'),
+                        : const AssetImage('assets/images/img-no-avatar.jpg'),
                     fit: BoxFit.cover,
                   ),
                 ),

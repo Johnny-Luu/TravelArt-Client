@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:travelapp/services/customer_services.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -24,6 +25,10 @@ class AuthenticationService {
         email: email,
         password: password,
       );
+
+      var customerService = CustomerService();
+      customerService.createCustomer(email);
+
       return true;
     } on FirebaseAuthException catch (e) {
       print(e.message);

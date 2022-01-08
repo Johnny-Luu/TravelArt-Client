@@ -85,19 +85,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            ProfileScreen(
-                              customer: customer!,
-                              callbackUpdateAvatar: updateAvatar
-                            ),
+                        builder: (context) => ProfileScreen(
+                            customer: customer!,
+                            callbackUpdateAvatar: updateAvatar),
                       ),
                     );
                   },
                   child: CircleAvatar(
                     radius: 24.0,
-                    backgroundImage: customer != null
-                        ? MemoryImage(base64Decode(customer!.avatar))
-                        : null,
+                    backgroundImage:
+                        customer != null && customer?.avatar.isNotEmpty == true
+                            ? MemoryImage(base64Decode(customer!.avatar))
+                            : Image.asset('assets/images/img-no-avatar.jpg').image,
                   ),
                 ),
               ],
