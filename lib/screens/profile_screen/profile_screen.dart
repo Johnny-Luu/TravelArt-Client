@@ -80,137 +80,150 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 2.5,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-              image: DecorationImage(
-                image: avatar != null
-                    ? avatar!
-                    : const AssetImage('assets/images/img-avatar.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
+          Column(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 2.5,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                  image: DecorationImage(
+                    image: avatar != null
+                        ? avatar!
+                        : const AssetImage('assets/images/img-avatar.jpg'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Theme.of(context).primaryColor,
-                  ],
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    ),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Theme.of(context).primaryColor,
+                      ],
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Flexible(
-                        child: Text(
-                          widget.customer.name,
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              widget.customer.name,
+                              style: GoogleFonts.playfairDisplay(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                FontAwesomeIcons.envelope,
+                                color: Colors.white,
+                                size: 16,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                widget.customer.email,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      InkWell(
+                        onTap: pickImage,
+                        child: Container(
+                          width: 60,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white.withOpacity(0.3),
+                          ),
+                          child: const Image(
+                            image: AssetImage('assets/images/icon-camera.png'),
                             color: Colors.white,
                           ),
                         ),
                       ),
-                      Row(
-                        children: [
-                          const Icon(
-                            FontAwesomeIcons.envelope,
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            widget.customer.email,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
-                  InkWell(
-                    onTap: pickImage,
-                    child: Container(
-                      width: 60,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white.withOpacity(0.3),
-                      ),
-                      child: const Image(
-                        image: AssetImage('assets/images/icon-camera.png'),
-                        color: Colors.white,
-                      ),
-                    ),
+                ),
+              ),
+              DefaultTabController(
+                length: 2,
+                child: TabBar(
+                  controller: _tabController,
+                  labelColor: Colors.blue[800],
+                  unselectedLabelColor: Colors.grey,
+                  labelStyle: GoogleFonts.lato(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
                   ),
-                ],
-              ),
-            ),
-          ),
-          DefaultTabController(
-            length: 2,
-            child: TabBar(
-              controller: _tabController,
-              labelColor: Colors.blue[800],
-              unselectedLabelColor: Colors.grey,
-              labelStyle: GoogleFonts.lato(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w600,
-              ),
-              unselectedLabelStyle: GoogleFonts.lato(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w600,
-              ),
-              indicator: UnderlineTabIndicator(
-                borderSide: BorderSide(
-                  width: 2.0,
-                  color: Colors.blue[800]!,
+                  unselectedLabelStyle: GoogleFonts.lato(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  indicator: UnderlineTabIndicator(
+                    borderSide: BorderSide(
+                      width: 2.0,
+                      color: Colors.blue[800]!,
+                    ),
+                    insets: const EdgeInsets.symmetric(horizontal: 75.0),
+                  ),
+                  tabs: const [
+                    Tab(child: Text("My info")),
+                    Tab(child: Text("My Groups")),
+                  ],
                 ),
-                insets: const EdgeInsets.symmetric(horizontal: 75.0),
               ),
-              tabs: const [
-                Tab(child: Text("My info")),
-                Tab(child: Text("My Groups")),
-              ],
-            ),
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                // My info section
-                InfoTab(
-                  customer: widget.customer,
-                  callbackUpdateName: updateName,
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    // My info section
+                    InfoTab(
+                      customer: widget.customer,
+                      callbackUpdateName: updateName,
+                    ),
+                    TourGroupTab(customer: widget.customer),
+                  ],
                 ),
-                TourGroupTab(customer: widget.customer),
-              ],
+              ),
+            ],
+          ),
+          Positioned(
+            top: 40,
+            left: 10,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new_rounded),
+              color: Colors.black,
+              onPressed: () => Navigator.pop(context),
             ),
           ),
         ],

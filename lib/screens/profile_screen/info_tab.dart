@@ -258,27 +258,35 @@ class _InfoTabState extends State<InfoTab> {
                   ),
                 ],
               )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  InkWell(
-                    onTap: onSignOut,
-                    child: Text(
-                      'Log out',
-                      style: GoogleFonts.roboto(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
+            : InkWell(
+                onTap: onSignOut,
+                child: Container(
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.redAccent[100],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Log out',
+                        style: GoogleFonts.roboto(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.red,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      const Icon(
+                        FontAwesomeIcons.signOutAlt,
+                        size: 18,
                         color: Colors.red,
                       ),
-                    ),
+                    ],
                   ),
-                  const SizedBox(width: 10),
-                  const Icon(
-                    FontAwesomeIcons.signOutAlt,
-                    size: 18,
-                    color: Colors.red,
-                  ),
-                ],
+                ),
               ),
       ),
     );

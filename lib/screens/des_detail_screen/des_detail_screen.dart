@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelapp/models/destination_model.dart';
 
@@ -36,67 +39,53 @@ class DestinationDetailScreen extends StatelessWidget {
               horizontal: 20.0,
               vertical: 50.0,
             ),
-            child: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(Icons.arrow_back_ios_new_rounded),
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(Icons.arrow_back_ios_new_rounded),
+                ),
+                const Spacer(),
+                const Icon(
+                  FontAwesomeIcons.ellipsisV,
+                  size: 20,
+                ),
+              ],
             ),
           ),
           Positioned(
             left: 20.0,
-            right: 60,
-            bottom: 50,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    Text(
-                      destination.name,
-                      style: GoogleFonts.playfairDisplay(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.2,
-                          color: Colors.white),
-                    ),
-                    Text(
-                      destination.name,
-                      style: GoogleFonts.playfairDisplay(
+            right: 20,
+            bottom: 40,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.black.withOpacity(0.2),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    destination.name,
+                    style: GoogleFonts.playfairDisplay(
                         fontSize: 40,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 1.2,
-                        foreground: Paint()
-                          ..style = PaintingStyle.stroke
-                          ..strokeWidth = 2
-                          ..color = Colors.black.withOpacity(0.6),
-                      ),
+                        color: Colors.white),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    destination.description,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
                     ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Stack(
-                  children: [
-                    Text(
-                      destination.description,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                      ),
-                    ),
-                    Text(
-                      destination.description,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        foreground: Paint()
-                          ..style = PaintingStyle.stroke
-                          ..strokeWidth = 1
-                          ..color = Colors.black.withOpacity(0.6),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
