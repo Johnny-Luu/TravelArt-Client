@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:travelapp/models/customer_model.dart';
 import 'package:travelapp/screens/profile_screen/info_tab.dart';
+import 'package:travelapp/screens/profile_screen/request_tab.dart';
 import 'package:travelapp/services/customer_services.dart';
 
 import 'tourgroup_tab.dart';
@@ -76,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   void initState() {
     super.initState();
     loadData();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -178,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
               ),
               DefaultTabController(
-                length: 2,
+                length: 3,
                 child: TabBar(
                   controller: _tabController,
                   labelColor: Colors.blue[800],
@@ -201,6 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   tabs: const [
                     Tab(child: Text("My info")),
                     Tab(child: Text("My Groups")),
+                    Tab(child: Text("Requests")),
                   ],
                 ),
               ),
@@ -214,6 +216,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       callbackUpdateName: updateName,
                     ),
                     TourGroupTab(customer: widget.customer),
+                    RequestTab(customer: widget.customer)
                   ],
                 ),
               ),

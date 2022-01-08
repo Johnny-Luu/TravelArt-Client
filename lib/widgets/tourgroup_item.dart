@@ -145,70 +145,95 @@ class TourGroupItem extends StatelessWidget {
             right: 10.0,
             bottom: 0.0,
             child: type == 1
-            ? InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ConfirmInfoScreen(tourId: tourGroup.id),
-                  ),
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 5.0,
-                  horizontal: 20.0,
-                ),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      offset: const Offset(1.0, 2.0),
-                      blurRadius: 3.0,
+                ? InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ConfirmInfoScreen(tourId: tourGroup.id),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 5.0,
+                        horizontal: 20.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(20.0),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            offset: const Offset(1.0, 2.0),
+                            blurRadius: 3.0,
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        "Book",
+                        style: GoogleFonts.roboto(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ],
-                ),
-                child: Text(
-                  "Book",
-                  style: GoogleFonts.roboto(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            )
-            : type == 2 
-            // joined button
-            ? Container(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 5.0,
-                  horizontal: 20.0,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      offset: Offset(1.0, 2.0),
-                      blurRadius: 3.0,
-                    ),
-                  ],
-                ),
-                child: Text(
-                  "Joined",
-                  style: GoogleFonts.roboto(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-            ) 
-            : Container(),
+                  )
+                : type == 2
+                    // joined button
+                    ? Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5.0,
+                          horizontal: 20.0,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(20.0),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              offset: Offset(1.0, 2.0),
+                              blurRadius: 3.0,
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          "Joined",
+                          style: GoogleFonts.roboto(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    // requested button
+                    : Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5.0,
+                          horizontal: 20.0,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF3F2FFF),
+                          borderRadius: BorderRadius.circular(20.0),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              offset: Offset(1.0, 2.0),
+                              blurRadius: 3.0,
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          "Requested",
+                          style: GoogleFonts.roboto(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
           ),
           // slot
           Positioned(

@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:travelapp/models/tourgroup_model.dart';
+import 'package:travelapp/services/request_services.dart';
 
 class TourGroupService {
   final dbRef = FirebaseDatabase.instance.ref();
@@ -37,7 +38,10 @@ class TourGroupService {
     return tourGroups;
   }
 
-  Future<List<TourGroup>> getCurrentTourGroupsByTour(String tourId) async {
+  Future<List<TourGroup>> getCurrentTourGroupsNotJoinedByTour(
+    String tourId,
+    String customerId,
+  ) async {
     List<TourGroup> tourGroups = [];
     DateTime now = DateTime.now();
 
@@ -49,7 +53,8 @@ class TourGroupService {
       var keys = jsonList.keys;
       for (var key in keys) {
         if (jsonList[key]["Id"] != "-1" &&
-            DateTime.parse(jsonList[key]["StartDate"]).isAfter(now)) {
+            DateTime.parse(jsonList[key]["StartDate"]).isAfter(now) &&
+            !jsonList[key]["CustomerList"].toString().contains(customerId)) {
           tourGroups.add(TourGroup.fromJson(jsonList[key]));
         }
       }
@@ -58,12 +63,57 @@ class TourGroupService {
     return tourGroups;
   }
 
+  Future<List<TourGroup>> getAvailableTourGroup(
+    String tourId,
+    String customerId,
+  ) async {
+    var requestService = RequestService();
+    var allRequest =
+        await requestService.getRequestOfCurrentCustomer(customerId);
+    var notJoinedTourGroups = await getCurrentTourGroupsNotJoinedByTour(
+      tourId,
+      customerId,
+    );
+
+    List<TourGroup> availableTourGroups = [];
+    for (var tourGroup in notJoinedTourGroups) {
+      if (allRequest
+          .where((element) => element.tourGroupId == tourGroup.id)
+          .isEmpty) {
+        availableTourGroups.add(tourGroup);
+      }
+    }
+
+    return availableTourGroups;
+  }
+
   Future<List<TourGroup>> getTourGroupsOfACustomer(String customerId) async {
     List<TourGroup> tourGroups = [];
     List<TourGroup> allTourGroups = await getAllTourGroups();
 
     for (var element in allTourGroups) {
       if (element.customerList.contains(customerId)) tourGroups.add(element);
+    }
+
+    return tourGroups;
+  }
+
+  Future<List<TourGroup>> getRequestedTourGroups(String customerId) async {
+    var requestService = RequestService();
+    var allRequest =
+        await requestService.getRequestOfCurrentCustomer(customerId);
+    List<TourGroup> tourGroups = [];
+
+    for (var request in allRequest) {
+      await dbRef
+          .child('TourGroup/${request.tourGroupId}')
+          .once()
+          .then((event) {
+        var json = event.snapshot.value as Map<dynamic, dynamic>;
+        if (json["Id"] != "-1") {
+          tourGroups.add(TourGroup.fromJson(json));
+        }
+      });
     }
 
     return tourGroups;

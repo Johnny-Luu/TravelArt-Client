@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travelapp/models/customer_model.dart';
 import 'package:travelapp/models/tour_model.dart';
 import 'package:travelapp/models/tourgroup_model.dart';
+import 'package:travelapp/services/customer_services.dart';
 import 'package:travelapp/services/tourgroup_services.dart';
 import 'package:travelapp/widgets/tourgroup_item.dart';
 
@@ -15,12 +18,20 @@ class ChooseTourGroupScreen extends StatefulWidget {
 }
 
 class _ChooseTourGroupState extends State<ChooseTourGroupScreen> {
+  final firebaseAuth = FirebaseAuth.instance;
+  final customerService = CustomerService();
+  Customer? customer;
+  
   final tourGroupService = TourGroupService();
   List<TourGroup> tourGroups = [];
 
   void loadTourGroups() async {
+    customer = await customerService
+        .getCustomerByEmail(firebaseAuth.currentUser?.email);
+
     tourGroups =
-        await tourGroupService.getCurrentTourGroupsByTour(widget.tour.id);
+        await tourGroupService.getAvailableTourGroup(widget.tour.id, customer!.id);
+    
     setState(() {});
   }
 
