@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:travelapp/models/customer_model.dart';
+import 'package:travelapp/models/destination_model.dart';
 import 'package:travelapp/screens/home_screen/home_screen.dart';
 import 'package:travelapp/screens/profile_screen/profile_screen.dart';
 import 'package:travelapp/screens/search_screen/search_screen.dart';
 import 'package:travelapp/services/customer_services.dart';
+import 'package:travelapp/services/destination_services.dart';
+import 'package:travelapp/services/tour_services.dart';
+
+import 'models/tour_model.dart';
 
 class App extends StatefulWidget {
   App({Key? key}) : super(key: key);
@@ -23,13 +28,12 @@ class _AppState extends State<App> {
     });
   }
 
-
   @override
   void initState() {
     super.initState();
     tabs = [
       const HomeScreen(),
-      SearchScreen(),
+      const SearchScreen(),
       ProfileScreen(callbackSetNavbar: changeBottomNavbarVisibility),
     ];
   }

@@ -16,9 +16,14 @@ import 'detail_tab.dart';
 class TourDetailScreen extends StatefulWidget {
   final Tour tour;
   final Image tourImg;
+  final int type;
 
-  const TourDetailScreen({Key? key, required this.tour, required this.tourImg})
-      : super(key: key);
+  const TourDetailScreen({
+    Key? key,
+    required this.tour,
+    required this.tourImg,
+    required this.type,
+  }) : super(key: key);
 
   @override
   _TourDetailScreenState createState() => _TourDetailScreenState();
@@ -71,7 +76,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                   ],
                 ),
                 child: Hero(
-                  tag: widget.tour.id,
+                  tag: widget.type == 1 ? widget.tour.id : widget.tour.name,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(30.0),
                     child: Image(

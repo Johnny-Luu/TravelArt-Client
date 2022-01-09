@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travelapp/app.dart';
 import 'package:travelapp/screens/home_screen/home_screen.dart';
 import 'package:travelapp/screens/login_screen/signup_screen.dart';
 import 'package:travelapp/services/user_services.dart';
@@ -35,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (result) {
       // TODO: HANDLE LOGIN SUCCESSFUL HERE
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          context, MaterialPageRoute(builder: (context) => App()));
     }
     else {
       // TODO: HANDLE LOGIN FAILED HERE

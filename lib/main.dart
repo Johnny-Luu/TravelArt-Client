@@ -31,11 +31,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: const Color(0xFF4dbedc),
         accentColor: const Color(0xFFD8ECF1),
-        scaffoldBackgroundColor: const Color(0xFFf9f9f9),
+        scaffoldBackgroundColor: const Color(0xFFF6F6F6),
       ),
-      home: firebaseAuth.currentUser == null
-          ? LoginScreen()
-          : App(),
+      home: firebaseAuth.currentUser == null ? LoginScreen() : App(),
     );
   }
 }

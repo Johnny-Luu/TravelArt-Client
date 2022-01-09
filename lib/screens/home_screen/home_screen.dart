@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 20.0),
-          TourCarousel(tourList: tourList),
+          tourList.isNotEmpty ? TourCarousel(tourList: tourList) : Container(),
           const SizedBox(height: 20.0),
           HotelCarousel(),
           const SizedBox(height: 20.0),
