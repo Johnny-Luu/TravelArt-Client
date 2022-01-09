@@ -201,7 +201,7 @@ class _RatingTabState extends State<RatingTab> {
               backgroundColor: Theme.of(context).primaryColor,
               child: const Image(
                 color: Colors.white,
-                image: AssetImage('assets/images/icon-write.png'),
+                image: AssetImage('assets/icons/icon-write.png'),
               ),
               onPressed: () {
                 showModalBottomSheet(

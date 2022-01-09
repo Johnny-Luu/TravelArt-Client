@@ -9,10 +9,15 @@ import 'package:travelapp/services/user_services.dart';
 
 class InfoTab extends StatefulWidget {
   final Customer? customer;
+  final Function callbackSetNavbar;
   final Function callbackUpdateName;
 
-  InfoTab({Key? key, required this.customer, required this.callbackUpdateName})
-      : super(key: key);
+  InfoTab({
+    Key? key,
+    required this.customer,
+    required this.callbackSetNavbar,
+    required this.callbackUpdateName,
+  }) : super(key: key);
 
   @override
   _InfoTabState createState() => _InfoTabState();
@@ -41,6 +46,8 @@ class _InfoTabState extends State<InfoTab> {
     phoneController.text = widget.customer!.phone;
     addressController.text = widget.customer!.address;
 
+    widget.callbackSetNavbar(false);
+
     setState(() {
       isEditing = false;
     });
@@ -55,6 +62,8 @@ class _InfoTabState extends State<InfoTab> {
 
       return;
     }
+
+    widget.callbackSetNavbar(false);
 
     setState(() {
       isEditing = false;
@@ -99,14 +108,24 @@ class _InfoTabState extends State<InfoTab> {
             children: [
               InkWell(
                 onTap: () {
+                  widget.callbackSetNavbar(true);
                   setState(() {
                     isEditing = true;
                   });
                 },
                 child: Icon(
                   FontAwesomeIcons.pen,
-                  size: 24,
-                  color: Colors.blue[800],
+                  size: 22,
+                  color: isEditing ? Colors.blue[800] : Colors.grey,
+                ),
+              ),
+              const SizedBox(width: 14),
+              InkWell(
+                onTap: onSignOut,
+                child: const Icon(
+                  FontAwesomeIcons.signOutAlt,
+                  size: 25,
+                  color: Colors.grey,
                 ),
               ),
             ],
@@ -258,40 +277,7 @@ class _InfoTabState extends State<InfoTab> {
                   ),
                 ],
               )
-            : InkWell(
-                onTap: onSignOut,
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.transparent,
-                    border: Border.all(
-                      color: Colors.red,
-                      width: 1,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Log out',
-                        style: GoogleFonts.roboto(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.red,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      const Icon(
-                        FontAwesomeIcons.signOutAlt,
-                        size: 18,
-                        color: Colors.red,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            : const SizedBox(),
       ),
     );
   }

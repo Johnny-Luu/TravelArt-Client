@@ -65,7 +65,7 @@ class TourGroupItem extends StatelessWidget {
                       const Image(
                         width: 18.0,
                         image: AssetImage(
-                          "assets/images/icon-paper-plane.png",
+                          "assets/icons/icon-paper-plane.png",
                         ),
                       ),
                       const SizedBox(width: 6.0),
@@ -88,7 +88,7 @@ class TourGroupItem extends StatelessWidget {
                       const Image(
                         width: 18.0,
                         image: AssetImage(
-                          "assets/images/icon-tourist-guide.png",
+                          "assets/icons/icon-tourist-guide.png",
                         ),
                       ),
                       const SizedBox(width: 4.0),
@@ -108,7 +108,7 @@ class TourGroupItem extends StatelessWidget {
                       const Image(
                         width: 18.0,
                         image: AssetImage(
-                          "assets/images/icon-hat.png",
+                          "assets/icons/icon-hat.png",
                         ),
                       ),
                       const SizedBox(width: 4.0),

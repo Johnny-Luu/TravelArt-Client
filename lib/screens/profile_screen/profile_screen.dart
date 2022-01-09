@@ -16,12 +16,8 @@ import 'package:travelapp/services/customer_services.dart';
 import 'tourgroup_tab.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final Customer customer;
-  final Function callbackUpdateAvatar;
-
-  ProfileScreen(
-      {Key? key, required this.callbackUpdateAvatar, required this.customer})
-      : super(key: key);
+  final Function callbackSetNavbar;
+  ProfileScreen({Key? key, required this.callbackSetNavbar}) : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -32,15 +28,20 @@ class _ProfileScreenState extends State<ProfileScreen>
   late TabController _tabController;
   var nameController = TextEditingController();
 
+  final firebaseAuth = FirebaseAuth.instance;
+  final customerService = CustomerService();
+  Customer? customer;
+
   ImageProvider? avatar;
 
-  final customerService = CustomerService();
-
   void loadData() async {
-    nameController.text = widget.customer.name;
+    customer = await customerService
+        .getCustomerByEmail(firebaseAuth.currentUser?.email);
 
-    if (widget.customer.avatar.isNotEmpty) {
-      avatar = MemoryImage(base64Decode(widget.customer.avatar));
+    nameController.text = customer!.name;
+
+    if (customer!.avatar.isNotEmpty) {
+      avatar = MemoryImage(base64Decode(customer!.avatar));
     }
 
     setState(() {});
@@ -48,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   void updateName(String name) {
     setState(() {
-      widget.customer.name = name;
+      customer!.name = name;
       nameController.text = name;
     });
   }
@@ -62,8 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
       final bytes = File(img.path).readAsBytesSync();
       String img64 = base64Encode(bytes);
-      customerService.updateAvatar(widget.customer.id, img64);
-      widget.callbackUpdateAvatar(img64);
+      customerService.updateAvatar(customer!.id, img64);
 
       setState(() {
         avatar = FileImage(File(img.path));
@@ -131,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         children: [
                           Flexible(
                             child: Text(
-                              widget.customer.name,
+                              customer != null ? customer!.name : '',
                               style: GoogleFonts.playfairDisplay(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
@@ -148,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
                               const SizedBox(width: 5),
                               Text(
-                                widget.customer.email,
+                                customer != null ? customer!.email : '',
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w300,
@@ -169,7 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             color: Colors.white.withOpacity(0.3),
                           ),
                           child: const Image(
-                            image: AssetImage('assets/images/icon-camera.png'),
+                            image: AssetImage('assets/icons/icon-camera.png'),
                             color: Colors.white,
                           ),
                         ),
@@ -209,27 +209,25 @@ class _ProfileScreenState extends State<ProfileScreen>
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: [
-                    // My info section
-                    InfoTab(
-                      customer: widget.customer,
-                      callbackUpdateName: updateName,
-                    ),
-                    TourGroupTab(customer: widget.customer),
-                    RequestTab(customer: widget.customer)
-                  ],
+                  children: customer != null
+                      ? [
+                          // My info section
+                          InfoTab(
+                            customer: customer,
+                            callbackSetNavbar: widget.callbackSetNavbar,
+                            callbackUpdateName: updateName,
+                          ),
+                          TourGroupTab(customer: customer!),
+                          RequestTab(customer: customer!)
+                        ]
+                      : [
+                          Container(),
+                          Container(),
+                          Container(),
+                        ],
                 ),
               ),
             ],
-          ),
-          Positioned(
-            top: 40,
-            left: 10,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new_rounded),
-              color: Colors.black,
-              onPressed: () => Navigator.pop(context),
-            ),
           ),
         ],
       ),

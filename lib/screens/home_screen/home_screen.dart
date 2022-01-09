@@ -22,29 +22,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final firebaseAuth = FirebaseAuth.instance;
   var tourServices = TourService();
   List<Tour> tourList = [];
 
-  final customerService = CustomerService();
-  Customer? customer;
-
-  int _selectedIndex = 0;
-  int _currentTab = 0;
-
   void loadData() async {
     tourList = await tourServices.getAllTours();
-
-    customer = await customerService
-        .getCustomerByEmail(firebaseAuth.currentUser?.email);
-
     setState(() {});
-  }
-
-  void updateAvatar(String avatar) {
-    setState(() {
-      customer?.avatar = avatar;
-    });
   }
 
   @override
@@ -56,49 +39,32 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
       body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(vertical: 30.0),
         children: <Widget>[
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  children: const [
-                    Image(image: AssetImage('assets/images/icon-menu.png')),
-                    SizedBox(width: 10),
-                    Text(
-                      "Hello, User",
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileScreen(
-                            customer: customer!,
-                            callbackUpdateAvatar: updateAvatar),
-                      ),
-                    );
-                  },
-                  child: CircleAvatar(
-                    radius: 24.0,
-                    backgroundImage:
-                        customer != null && customer?.avatar.isNotEmpty == true
-                            ? MemoryImage(base64Decode(customer!.avatar))
-                            : Image.asset('assets/images/img-no-avatar.jpg').image,
+              children: const [
+                Image(image: AssetImage('assets/icons/icon-menu.png')),
+                SizedBox(width: 10),
+                Text(
+                  "Ready to start new journey?",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black87,
                   ),
                 ),
+                Spacer(),
+                Icon(
+                  FontAwesomeIcons.bell,
+                  size: 22,
+                )
               ],
             ),
           ),
@@ -128,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Image(
                       width: 32,
                       color: Theme.of(context).primaryColor,
-                      image: const AssetImage('assets/images/icon-plane.png'),
+                      image: const AssetImage('assets/icons/icon-plane.png'),
                     ),
                   ],
                 ),
@@ -141,57 +107,6 @@ class _HomeScreenState extends State<HomeScreen> {
           HotelCarousel(),
           const SizedBox(height: 20.0),
         ],
-      ),
-      bottomNavigationBar: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(20),
-          topLeft: Radius.circular(20),
-        ),
-        child: BottomNavigationBar(
-          selectedItemColor: Theme.of(context).primaryColor,
-          backgroundColor: Colors.white,
-          currentIndex: _currentTab,
-          onTap: (int value) {
-            setState(() {
-              _currentTab = value;
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home_outlined,
-                size: 30.0,
-              ),
-              activeIcon: Icon(
-                Icons.home_rounded,
-                size: 30.0,
-              ),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.search,
-                size: 30.0,
-              ),
-              activeIcon: Icon(
-                Icons.search_rounded,
-                size: 30.0,
-              ),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person_outline,
-                size: 30.0,
-              ),
-              activeIcon: Icon(
-                Icons.person_rounded,
-                size: 30.0,
-              ),
-              label: 'Profile',
-            ),
-          ],
-        ),
       ),
     );
   }
