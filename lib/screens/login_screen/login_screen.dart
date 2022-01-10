@@ -37,8 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // TODO: HANDLE LOGIN SUCCESSFUL HERE
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => App()));
-    }
-    else {
+    } else {
       // TODO: HANDLE LOGIN FAILED HERE
       print("login failed");
     }
@@ -52,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
         height: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/img-background2.jpg'),
+            image: AssetImage('assets/images/img-login-background.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -67,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: GoogleFonts.playfairDisplay(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: const Color(0xFF3b4859),
                 ),
               ),
               const Spacer(),
@@ -77,6 +76,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1,
+                  ),
                 ),
                 child: TextField(
                   controller: emailController,
@@ -104,6 +107,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1,
+                  ),
                 ),
                 child: TextField(
                   controller: passwordController,
@@ -146,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(
                     "forgot password?",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontStyle: FontStyle.italic,
                       decoration: TextDecoration.underline,
                     ),
@@ -161,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.8),
+                    color: const Color(0xFF3b4859),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: const Center(
@@ -175,6 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
+              const Spacer(),
               const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

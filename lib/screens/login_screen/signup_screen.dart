@@ -14,6 +14,7 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   var firebaseAuth = AuthenticationService(FirebaseAuth.instance);
 
+  var nameController = TextEditingController();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
@@ -22,11 +23,15 @@ class _SignupScreenState extends State<SignupScreen> {
   var isConfirmPasswordHidden = true;
 
   void onSignUp() async {
+    var name = nameController.text;
     var email = emailController.text;
     var password = passwordController.text;
     var confirmPassword = confirmPasswordController.text;
 
-    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+    if (name.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
       // TODO: HANDLE EMPTY FIELDS HERE
       print("empty fields");
       return;
@@ -43,9 +48,8 @@ class _SignupScreenState extends State<SignupScreen> {
     if (result) {
       // TODO: HANDLE SIGNUP SUCCESSFUL HERE
       print("success");
-      Navigator.pop(context);                 // back to login screen
-    }
-    else {
+      Navigator.pop(context); // back to login screen
+    } else {
       // TODO: HANDLE SIGNUP FAILED HERE
       print("signup failed");
     }
@@ -59,7 +63,7 @@ class _SignupScreenState extends State<SignupScreen> {
         height: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/img-background2.jpg'),
+            image: AssetImage('assets/images/img-login-background.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -74,7 +78,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 style: GoogleFonts.playfairDisplay(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: const Color(0xFF3b4859),
                 ),
               ),
               const Spacer(),
@@ -84,20 +88,24 @@ class _SignupScreenState extends State<SignupScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1,
+                  ),
                 ),
                 child: TextField(
-                  controller: emailController,
+                  controller: nameController,
                   textAlignVertical: TextAlignVertical.center,
-                  keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.text,
                   cursorColor: Colors.black,
                   style: const TextStyle(
                     fontSize: 18,
                   ),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
-                    hintText: "Email",
+                    hintText: "Name",
                     prefixIcon: Icon(
-                      FontAwesomeIcons.userAlt,
+                      FontAwesomeIcons.user,
                       size: 20,
                       color: Colors.black54,
                     ),
@@ -111,6 +119,41 @@ class _SignupScreenState extends State<SignupScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1,
+                  ),
+                ),
+                child: TextField(
+                  controller: emailController,
+                  textAlignVertical: TextAlignVertical.center,
+                  keyboardType: TextInputType.emailAddress,
+                  cursorColor: Colors.black,
+                  style: const TextStyle(
+                    fontSize: 18,
+                  ),
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Email",
+                    prefixIcon: Icon(
+                      FontAwesomeIcons.envelope,
+                      size: 20,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.6),
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1,
+                  ),
                 ),
                 child: TextField(
                   controller: passwordController,
@@ -153,6 +196,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1,
+                  ),
                 ),
                 child: TextField(
                   controller: confirmPasswordController,
@@ -195,7 +242,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   width: double.infinity,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.8),
+                    color: const Color(0xFF3b4859),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: const Center(
@@ -209,6 +256,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
               ),
+              const Spacer(),
               const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
