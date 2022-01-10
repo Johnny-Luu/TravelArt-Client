@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:travelapp/models/comment_model.dart';
 import 'package:travelapp/services/customer_services.dart';
+import 'package:travelapp/widgets/error_snackbar.dart';
+import 'package:travelapp/widgets/success_snackbar.dart';
 
 class RatingBottomSheet extends StatefulWidget {
   final Function callbackSubmitComment;
@@ -52,8 +54,13 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
   }
 
   void onSubmit() async {
-    if (_ratingPoint == 0.0 || _commentController.text.isEmpty) {
-      // TODO: HANDLE SHOW EMPTY COMMENT HERE
+    if (_ratingPoint == 0.0) {
+      ErrorSnackbar.show(context, 'Leave a rating!');
+      return;
+    }
+
+    if (_commentController.text.isEmpty) {
+      ErrorSnackbar.show(context, 'Write something!');
       return;
     }
 
@@ -72,8 +79,11 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
       ),
     );
 
-    widget.callbackSubmitComment(comment);
-    Navigator.pop(context);
+    SuccessSnackbar.show(context, 'Submit comment successfully!');
+    Future.delayed(const Duration(seconds: 1), () {
+      widget.callbackSubmitComment(comment);
+      Navigator.pop(context);
+    });
   }
 
   @override

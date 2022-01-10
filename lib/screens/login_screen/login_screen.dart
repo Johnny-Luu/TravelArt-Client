@@ -6,6 +6,8 @@ import 'package:travelapp/app.dart';
 import 'package:travelapp/screens/home_screen/home_screen.dart';
 import 'package:travelapp/screens/login_screen/signup_screen.dart';
 import 'package:travelapp/services/user_services.dart';
+import 'package:travelapp/widgets/error_snackbar.dart';
+import 'package:travelapp/widgets/success_snackbar.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -26,20 +28,20 @@ class _LoginScreenState extends State<LoginScreen> {
     var password = passwordController.text;
 
     if (email.isEmpty || password.isEmpty) {
-      // TODO: HANDLE EMPTY FIELDS HERE
-      print("empty");
+      ErrorSnackbar.show(context, 'Please fulfill all infomation!');
       return;
     }
 
     bool result = await firebaseAuth.LogIn(email, password);
 
     if (result) {
-      // TODO: HANDLE LOGIN SUCCESSFUL HERE
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => App()));
+      SuccessSnackbar.show(context, 'Login successfully!');
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => App()));
+      });
     } else {
-      // TODO: HANDLE LOGIN FAILED HERE
-      print("login failed");
+      ErrorSnackbar.show(context, 'Login failed, try again!');
     }
   }
 

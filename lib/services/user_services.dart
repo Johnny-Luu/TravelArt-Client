@@ -19,7 +19,7 @@ class AuthenticationService {
     }
   }
 
-  Future<bool> SignUp(String email, String password) async {
+  Future<bool> SignUp(String name, String email, String password) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
@@ -27,7 +27,7 @@ class AuthenticationService {
       );
 
       var customerService = CustomerService();
-      customerService.createCustomer(email);
+      customerService.createCustomer(name, email);
 
       return true;
     } on FirebaseAuthException catch (e) {

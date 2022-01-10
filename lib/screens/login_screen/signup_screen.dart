@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelapp/services/user_services.dart';
+import 'package:travelapp/widgets/error_snackbar.dart';
+import 'package:travelapp/widgets/success_snackbar.dart';
 
 class SignupScreen extends StatefulWidget {
   SignupScreen({Key? key}) : super(key: key);
@@ -32,26 +34,24 @@ class _SignupScreenState extends State<SignupScreen> {
         email.isEmpty ||
         password.isEmpty ||
         confirmPassword.isEmpty) {
-      // TODO: HANDLE EMPTY FIELDS HERE
-      print("empty fields");
+      ErrorSnackbar.show(context, 'Please fulfill all infomation!');
       return;
     }
 
     if (password != confirmPassword) {
-      // TODO: HANDLE WRONG CONFIRM PASSWORD HERE
-      print("wrong confirm password");
+      ErrorSnackbar.show(context, 'Password not matching!');
       return;
     }
 
-    var result = await firebaseAuth.SignUp(email, password);
+    var result = await firebaseAuth.SignUp(name, email, password);
 
     if (result) {
-      // TODO: HANDLE SIGNUP SUCCESSFUL HERE
-      print("success");
-      Navigator.pop(context); // back to login screen
+      SuccessSnackbar.show(context, 'Signup successfully!');
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.pop(context);
+      });
     } else {
-      // TODO: HANDLE SIGNUP FAILED HERE
-      print("signup failed");
+      ErrorSnackbar.show(context, 'Signup failed, try again!');
     }
   }
 

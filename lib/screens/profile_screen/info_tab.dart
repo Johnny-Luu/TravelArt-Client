@@ -6,6 +6,8 @@ import 'package:travelapp/models/customer_model.dart';
 import 'package:travelapp/screens/login_screen/login_screen.dart';
 import 'package:travelapp/services/customer_services.dart';
 import 'package:travelapp/services/user_services.dart';
+import 'package:travelapp/widgets/error_snackbar.dart';
+import 'package:travelapp/widgets/success_snackbar.dart';
 
 class InfoTab extends StatefulWidget {
   final Customer? customer;
@@ -58,8 +60,7 @@ class _InfoTabState extends State<InfoTab> {
         emailController.text.isEmpty ||
         phoneController.text.isEmpty ||
         addressController.text.isEmpty) {
-      // TODO: HANDLE SHOW ERROR HERE
-
+      ErrorSnackbar.show(context, 'Please fulfill all infomation!');
       return;
     }
 
@@ -76,8 +77,8 @@ class _InfoTabState extends State<InfoTab> {
     widget.callbackUpdateName(nameController.text);
 
     customerService.updateInfo(widget.customer!);
-
-    // TODO: HANDLE SHOW UPDATE SUCCESS HERE
+    
+    SuccessSnackbar.show(context, 'Update info successfully!');
   }
 
   void onSignOut() {

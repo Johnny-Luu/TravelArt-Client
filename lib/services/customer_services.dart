@@ -17,13 +17,13 @@ class CustomerService {
     return customers;
   }
 
-  void createCustomer(String email) async {
+  void createCustomer(String name, String email) async {
     var customerList = await getAllCustomers();
     var id = customerList.length.toString();
     await dbRef.child('Customer/$id').set({
       'Id': id,
       'Avatar': "",
-      'Name': "",
+      'Name': name,
       'Email': email,
       'Phone': "",
       'Address': "",
