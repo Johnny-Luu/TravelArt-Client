@@ -30,7 +30,9 @@ class _RatingTabState extends State<RatingTab> {
   var ratingThree = 0;
   var ratingFour = 0;
   var ratingFive = 0;
+
   bool canComment = false;
+  bool isLoading = true;
 
   final firebaseAuth = FirebaseAuth.instance;
   final tourGroupService = TourGroupService();
@@ -110,7 +112,9 @@ class _RatingTabState extends State<RatingTab> {
       ratingPoint = ratingPoint / countRating;
     }
 
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -175,25 +179,32 @@ class _RatingTabState extends State<RatingTab> {
               ),
             ],
           ),
-          customers.isNotEmpty
-              ? ListView.builder(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  reverse: true,
-                  padding: const EdgeInsets.all(10.0),
-                  itemCount: widget.tour.ratingList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Comment comment = widget.tour.ratingList[index];
-                    Customer customer = customers[index];
-                    return CommentItem(context, customer, comment);
-                  },
+          isLoading
+              ? Column(
+                  children: const [
+                    SizedBox(height: 40),
+                    CircularProgressIndicator(),
+                  ],
                 )
-              : Center(
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 20.0),
-                    child: const Text('No comment yet'),
-                  ),
-                ),
+              : customers.isNotEmpty
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      reverse: true,
+                      padding: const EdgeInsets.all(10.0),
+                      itemCount: widget.tour.ratingList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Comment comment = widget.tour.ratingList[index];
+                        Customer customer = customers[index];
+                        return CommentItem(context, customer, comment);
+                      },
+                    )
+                  : Center(
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 40.0),
+                        child: const Text('No comment yet'),
+                      ),
+                    ),
         ],
       ),
       floatingActionButton: canComment

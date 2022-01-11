@@ -21,18 +21,22 @@ class _ChooseTourGroupState extends State<ChooseTourGroupScreen> {
   final firebaseAuth = FirebaseAuth.instance;
   final customerService = CustomerService();
   Customer? customer;
-  
+
   final tourGroupService = TourGroupService();
   List<TourGroup> tourGroups = [];
+
+  var isLoading = true;
 
   void loadTourGroups() async {
     customer = await customerService
         .getCustomerByEmail(firebaseAuth.currentUser?.email);
 
-    tourGroups =
-        await tourGroupService.getAvailableTourGroup(widget.tour.id, customer!.id);
-    
-    setState(() {});
+    tourGroups = await tourGroupService.getAvailableTourGroup(
+        widget.tour.id, customer!.id);
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -89,31 +93,39 @@ class _ChooseTourGroupState extends State<ChooseTourGroupScreen> {
                         ),
                       ),
                       const SizedBox(height: 20.0),
-                      tourGroups.isNotEmpty
-                      ? ListView.builder(
-                        shrinkWrap: true,
-                        physics: const ClampingScrollPhysics(),
-                        itemCount: tourGroups.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return TourGroupItem(
-                            tourGroup: tourGroups[index],
-                            image: widget.tour.img,
-                            type: 1,
-                          );
-                        },
-                      )
-                      : Center(
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 30.0),
-                          child: Text(
-                            'No groups available!',
-                            style: GoogleFonts.playfairDisplay(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
+                      isLoading
+                          ? Center(
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 40.0),
+                                child: const CircularProgressIndicator(),
+                              ),
+                            )
+                          : tourGroups.isNotEmpty
+                              ? ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const ClampingScrollPhysics(),
+                                  itemCount: tourGroups.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return TourGroupItem(
+                                      tourGroup: tourGroups[index],
+                                      image: widget.tour.img,
+                                      type: 1,
+                                    );
+                                  },
+                                )
+                              : Center(
+                                  child: Container(
+                                    margin: const EdgeInsets.only(top: 30.0),
+                                    child: Text(
+                                      'No groups available!',
+                                      style: GoogleFonts.playfairDisplay(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                     ],
                   ),
                 ],

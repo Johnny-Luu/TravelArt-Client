@@ -21,6 +21,8 @@ class _TourGroupTabState extends State<TourGroupTab> {
   List<TourGroup> tourGroups = [];
   Map<String, Tour> tourMaps = {};
 
+  var isLoading = true;
+
   void loadData() async {
     tourGroups =
         await tourGroupService.getTourGroupsOfACustomer(widget.customer.id);
@@ -34,7 +36,9 @@ class _TourGroupTabState extends State<TourGroupTab> {
       tourMaps[tourGroup.tourId] = tour;
     }
 
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -45,23 +49,25 @@ class _TourGroupTabState extends State<TourGroupTab> {
 
   @override
   Widget build(BuildContext context) {
-    return tourGroups.isNotEmpty
-        ? ListView.builder(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            physics: const BouncingScrollPhysics(),
-            itemCount: tourGroups.length,
-            itemBuilder: (BuildContext context, int index) {
-              return TourGroupItem(
-                tourGroup: tourGroups[index],
-                image: tourMaps[tourGroups[index].tourId]!.img,
-                type: 2,
+    return isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : tourGroups.isNotEmpty
+            ? ListView.builder(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                physics: const BouncingScrollPhysics(),
+                itemCount: tourGroups.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return TourGroupItem(
+                    tourGroup: tourGroups[index],
+                    image: tourMaps[tourGroups[index].tourId]!.img,
+                    type: 2,
+                  );
+                })
+            : const Center(
+                child: Text(
+                  'Empty list!',
+                  style: TextStyle(fontSize: 20),
+                ),
               );
-            })
-        : const Center(
-            child: Text(
-              'Empty list!',
-              style: TextStyle(fontSize: 20),
-            ),
-          );
   }
 }
