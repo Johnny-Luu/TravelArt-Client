@@ -23,7 +23,7 @@ class TourCarousel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               const Text(
-                'Top Destinations',
+                'Top Tours',
                 style: TextStyle(
                   fontSize: 22.0,
                   fontWeight: FontWeight.bold,

@@ -27,8 +27,11 @@ class PlanningItem extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                DestinationDetailScreen(destination: destination, img: desImg),
+            builder: (context) => DestinationDetailScreen(
+              destination: destination,
+              img: desImg,
+              type: 1,
+            ),
           ),
         );
       },
@@ -88,20 +91,20 @@ class PlanningItem extends StatelessWidget {
                     ),
                   ),
                   type == 1
-                  ? Positioned(
-                    top: 0,
-                    left: -20,
-                    child: Text(
-                      index.toString(),
-                      style: GoogleFonts.playfairDisplay(
-                        color: Colors.white.withOpacity(0.8),
-                        fontSize: 160.0,
-                        fontWeight: FontWeight.w600,
-                        height: 1.0,
-                      ),
-                    ),
-                  )
-                  : const SizedBox(),
+                      ? Positioned(
+                          top: 0,
+                          left: -20,
+                          child: Text(
+                            index.toString(),
+                            style: GoogleFonts.playfairDisplay(
+                              color: Colors.white.withOpacity(0.8),
+                              fontSize: 160.0,
+                              fontWeight: FontWeight.w600,
+                              height: 1.0,
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
                 ],
               ),
             ),

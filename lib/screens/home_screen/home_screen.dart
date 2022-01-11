@@ -4,13 +4,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelapp/models/customer_model.dart';
+import 'package:travelapp/models/destination_model.dart';
 import 'package:travelapp/models/tour_model.dart';
+import 'package:travelapp/screens/home_screen/destination_carousel.dart';
 import 'package:travelapp/screens/home_screen/tour_carousel.dart';
 import 'package:travelapp/screens/home_screen/hotel_carousel.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travelapp/screens/login_screen/login_screen.dart';
 import 'package:travelapp/screens/profile_screen/profile_screen.dart';
 import 'package:travelapp/services/customer_services.dart';
+import 'package:travelapp/services/destination_services.dart';
 import 'package:travelapp/services/tour_services.dart';
 import 'package:travelapp/services/user_services.dart';
 
@@ -23,10 +26,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var tourServices = TourService();
+  var destinationService = DestinationService();
   List<Tour> tourList = [];
+  List<Destination> destinationList = [];
 
   void loadData() async {
     tourList = await tourServices.getAllTours();
+    destinationList = await destinationService.getFirstFiveDestinations();
     setState(() {});
   }
 
@@ -101,6 +107,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+          const SizedBox(height: 20.0),
+          destinationList.isNotEmpty
+              ? DestinationCarousel(destinationList: destinationList)
+              : Container(),
           const SizedBox(height: 20.0),
           tourList.isNotEmpty ? TourCarousel(tourList: tourList) : Container(),
           const SizedBox(height: 20.0),

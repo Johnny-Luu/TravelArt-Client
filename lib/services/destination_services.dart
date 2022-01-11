@@ -33,4 +33,20 @@ class DestinationService {
     });
     return destination;
   }
+
+  Future<List<Destination>> getFirstFiveDestinations() async {
+    List<Destination> destinations = [];
+
+    Query query = dbRef.child('Destination').limitToFirst(5);
+
+    await query.once().then((event) {
+      var jsonList = event.snapshot.value as List;
+      for (var element in jsonList) {
+        if (element["Id"] != "-1") {
+          destinations.add(Destination.fromJson(element));
+        }
+      }
+    });
+    return destinations;
+  }
 }

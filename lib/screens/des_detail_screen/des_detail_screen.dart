@@ -9,11 +9,13 @@ import 'package:travelapp/models/destination_model.dart';
 class DestinationDetailScreen extends StatelessWidget {
   final Destination destination;
   final Image img;
+  final int type;
 
   const DestinationDetailScreen({
     Key? key,
     required this.destination,
-    required this.img,
+    required this.img, 
+    required this.type,
   }) : super(key: key);
 
   @override
@@ -25,7 +27,7 @@ class DestinationDetailScreen extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: Hero(
-              tag: destination.name,
+              tag: type == 1 ? destination.name : destination.description,
               child: Image(
                 width: double.infinity,
                 height: double.infinity,
@@ -77,11 +79,29 @@ class DestinationDetailScreen extends StatelessWidget {
                         color: Colors.white),
                   ),
                   const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.location_pin,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      Text(
+                        destination.province,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
                   Text(
                     destination.description,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
+                      fontWeight: FontWeight.w300,
                     ),
                   ),
                 ],
