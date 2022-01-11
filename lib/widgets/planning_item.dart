@@ -9,11 +9,13 @@ import 'package:travelapp/screens/des_detail_screen/des_detail_screen.dart';
 class PlanningItem extends StatelessWidget {
   final Destination destination;
   final int index;
+  final int type;
 
   PlanningItem({
     Key? key,
     required this.destination,
     required this.index,
+    required this.type,
   }) : super(key: key);
 
   @override
@@ -85,7 +87,8 @@ class PlanningItem extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  Positioned(
+                  type == 1
+                  ? Positioned(
                     top: 0,
                     left: -20,
                     child: Text(
@@ -98,6 +101,7 @@ class PlanningItem extends StatelessWidget {
                       ),
                     ),
                   )
+                  : const SizedBox(),
                 ],
               ),
             ),

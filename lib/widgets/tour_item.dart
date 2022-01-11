@@ -21,7 +21,7 @@ class TourItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 320,
+      height: type == 1 ? 320 : 350,
       child: GestureDetector(
         onTap: () => Navigator.push(
           context,
@@ -36,15 +36,15 @@ class TourItem extends StatelessWidget {
         // main container
         child: Container(
           margin: const EdgeInsets.all(10.0),
-          width: 240.0,
+          width: type == 1 ? 240.0 : 300.0,
           child: Stack(
             alignment: Alignment.topCenter,
             children: <Widget>[
               Positioned(
                 bottom: 15.0,
                 child: Container(
-                  height: 120.0,
-                  width: 240.0,
+                  height: type == 1 ? 120.0 : 150.0,
+                  width: type == 1 ? 240.0 : 320.0,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.0),
@@ -95,8 +95,8 @@ class TourItem extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20.0),
                         child: Image(
-                          height: 180.0,
-                          width: 200.0,
+                          height: type == 1 ? 180.0 : 200.0,
+                          width: type == 1 ? 200.0 : 280.0,
                           image: tourImg.image,
                           fit: BoxFit.cover,
                         ),
@@ -110,25 +110,26 @@ class TourItem extends StatelessWidget {
                         children: <Widget>[
                           Text(
                             tour.name,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
-                              fontSize: 24.0,
+                              fontSize: type == 1 ? 24.0 : 28.0,
                               fontWeight: FontWeight.w600,
                               letterSpacing: 1.2,
                             ),
                           ),
                           Row(
                             children: <Widget>[
-                              const Icon(
+                              Icon(
                                 FontAwesomeIcons.dollarSign,
-                                size: 12.0,
+                                size: type == 1 ? 12.0 : 16.0,
                                 color: Colors.white,
                               ),
                               const SizedBox(width: 2.0),
                               Text(
-                                formatCurrency.format(int.parse(tour.price)),
-                                style: const TextStyle(
+                                '${formatCurrency.format(int.parse(tour.price))} VND',
+                                style: TextStyle(
                                   color: Colors.white,
+                                  fontSize: type == 1 ? 12.0 : 16.0,
                                 ),
                               ),
                             ],

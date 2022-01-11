@@ -203,6 +203,7 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                           return PlanningItem(
                             destination: destination,
                             index: index + 1,
+                            type: 1,
                           );
                         },
                       )

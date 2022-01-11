@@ -203,7 +203,7 @@ class _SearchScreenState extends State<SearchScreen>
                     // tour list
                     ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 50),
                       itemCount: tourRenderList.length,
                       itemBuilder: (BuildContext context, int index) {
                         Tour tour = tourRenderList[index];
@@ -214,13 +214,14 @@ class _SearchScreenState extends State<SearchScreen>
                     // destination list
                     ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 50),
                       itemCount: destinationRenderList.length,
                       itemBuilder: (BuildContext context, int index) {
                         Destination destination = destinationRenderList[index];
                         return PlanningItem(
                           destination: destination,
                           index: index + 1,
+                          type: 2,
                         );
                       },
                     )
