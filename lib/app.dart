@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:travelapp/models/customer_model.dart';
 import 'package:travelapp/models/destination_model.dart';
 import 'package:travelapp/screens/home_screen/home_screen.dart';
@@ -64,46 +65,52 @@ class _AppState extends State<App> {
               ),
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(30)),
-                child: BottomNavigationBar(
+                child: SalomonBottomBar(
                   selectedItemColor: Theme.of(context).primaryColor,
-                  backgroundColor: Colors.white,
                   currentIndex: _currentTab,
-                  showUnselectedLabels: false,
-                  showSelectedLabels: false,
                   onTap: (int value) {
                     setState(() {
                       _currentTab = value;
                     });
                   },
-                  items: const [
-                    BottomNavigationBarItem(
-                      icon: ImageIcon(
+                  items: [
+                    SalomonBottomBarItem(
+                      icon: const ImageIcon(
                         AssetImage('assets/icons/icon-home-outline.png'),
                         size: 28.0,
                       ),
-                      activeIcon: ImageIcon(
+                      activeIcon: const ImageIcon(
                         AssetImage('assets/icons/icon-home-fill.png'),
                         size: 28.0,
                       ),
-                      label: 'Home',
+                      title: const Text(
+                        'Home',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
-                    BottomNavigationBarItem(
-                      icon: ImageIcon(
+                    SalomonBottomBarItem(
+                      icon: const ImageIcon(
                         AssetImage('assets/icons/icon-search.png'),
                         size: 28.0,
                       ),
-                      label: 'Search',
+                      title: const Text(
+                        'Search',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
-                    BottomNavigationBarItem(
-                      icon: ImageIcon(
+                    SalomonBottomBarItem(
+                      icon: const ImageIcon(
                         AssetImage('assets/icons/icon-person-outline.png'),
                         size: 28.0,
                       ),
-                      activeIcon: ImageIcon(
+                      activeIcon: const ImageIcon(
                         AssetImage('assets/icons/icon-person-fill.png'),
                         size: 28.0,
                       ),
-                      label: 'Profile',
+                      title: const Text(
+                        'Profile',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ],
                 ),
