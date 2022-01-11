@@ -12,10 +12,12 @@ import 'package:travelapp/widgets/comment_item.dart';
 
 class RatingTab extends StatefulWidget {
   final Tour tour;
+  final Function callbackUpdateRatingDetail;
 
   const RatingTab({
     Key? key,
     required this.tour,
+    required this.callbackUpdateRatingDetail,
   }) : super(key: key);
 
   @override
@@ -52,7 +54,10 @@ class _RatingTabState extends State<RatingTab> {
   }
 
   void onSubmitComment(Comment comment) async {
+    isLoading = true;
+
     customerService.submitComment(widget.tour.id, comment);
+    
     setState(() {
       bool isExist = false;
       for (var element in widget.tour.ratingList) {
@@ -67,6 +72,8 @@ class _RatingTabState extends State<RatingTab> {
       if (!isExist) {
         widget.tour.ratingList.add(comment);
       }
+
+      widget.callbackUpdateRatingDetail(widget.tour.ratingList);
 
       loadData();
     });

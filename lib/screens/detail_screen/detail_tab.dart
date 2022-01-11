@@ -11,7 +11,17 @@ class DetailTab extends StatelessWidget {
   DetailTab({Key? key, required this.tour}) : super(key: key);
 
   final formatCurrency = NumberFormat("#,###");
-  
+
+  double calculateRatingPoint() {
+    if (tour.ratingList.isEmpty) return 0;
+
+    var point = 0.0;
+    for (var cmt in tour.ratingList) {
+      point += cmt.rating;
+    }
+    return point / tour.ratingList.length;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +66,7 @@ class DetailTab extends StatelessWidget {
                               ),
                               const SizedBox(width: 4.0),
                               Text(
-                                "4.5",
+                                calculateRatingPoint().toStringAsFixed(1),
                                 style: GoogleFonts.roboto(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w600,
@@ -66,9 +76,9 @@ class DetailTab extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 5.0),
-                          const Text(
-                            "100 Reviews",
-                            style: TextStyle(fontSize: 12.0),
+                          Text(
+                            '${tour.ratingList.length} reviews',
+                            style: const TextStyle(fontSize: 12.0),
                           ),
                         ],
                       ),

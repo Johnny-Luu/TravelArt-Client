@@ -9,6 +9,7 @@ import 'package:travelapp/models/customer_model.dart';
 import 'package:travelapp/models/request_model.dart';
 import 'package:travelapp/screens/home_screen/home_screen.dart';
 import 'package:travelapp/services/customer_services.dart';
+import 'package:travelapp/widgets/success_snackbar.dart';
 
 class ConfirmInfoScreen extends StatefulWidget {
   final String tourId;
@@ -58,9 +59,10 @@ class _ConfirmInfoScreenState extends State<ConfirmInfoScreen> {
 
     customerService.submitRequest(request);
 
-    // TODO: HANDLE SHOW SEND REQUEST SUCESS HERE
-
-    Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
+    SuccessSnackbar.show(context, 'Submit request successfully!');
+    Future.delayed(const Duration(seconds: 1), () {
+      Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
+    });
   }
 
   @override

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelapp/models/activity_model.dart';
+import 'package:travelapp/models/comment_model.dart';
 import 'package:travelapp/models/destination_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travelapp/models/tour_model.dart';
@@ -43,6 +44,12 @@ class _TourDetailScreenState extends State<TourDetailScreen>
     }
     province = destinations[0].province;
     setState(() {});
+  }
+
+  void updateRatingList(List<Comment> list) {
+    setState(() {
+      widget.tour.ratingList = list;
+    });
   }
 
   @override
@@ -209,7 +216,10 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                       )
                     : const Center(child: Text("No destination")),
                 // rating section
-                RatingTab(tour: widget.tour),
+                RatingTab(
+                  tour: widget.tour,
+                  callbackUpdateRatingDetail: updateRatingList,
+                ),
               ],
             ),
           ),
