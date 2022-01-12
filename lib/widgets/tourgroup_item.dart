@@ -215,7 +215,7 @@ class TourGroupItem extends StatelessWidget {
                           horizontal: 20.0,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF3F2FFF),
+                          color: const Color(0xFF9129EC),
                           borderRadius: BorderRadius.circular(20.0),
                           boxShadow: const [
                             BoxShadow(

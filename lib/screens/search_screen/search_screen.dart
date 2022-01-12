@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelapp/models/destination_model.dart';
@@ -13,7 +14,9 @@ import 'package:travelapp/widgets/sliver_appbar_delegate.dart';
 import 'package:travelapp/widgets/tour_item.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  final Function callbackSetNavbar;
+
+  const SearchScreen({Key? key, required this.callbackSetNavbar}) : super(key: key);
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -23,6 +26,7 @@ class _SearchScreenState extends State<SearchScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   var _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   var tourServices = TourService();
   var destinationService = DestinationService();
@@ -78,12 +82,22 @@ class _SearchScreenState extends State<SearchScreen>
     _tabController.addListener(() {
       setState(() {});
     });
+    _scrollController.addListener(() {
+      if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        widget.callbackSetNavbar(false);
+      } else if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        widget.callbackSetNavbar(true);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
+        controller: _scrollController,
         headerSliverBuilder: (context, value) {
           return [
             SliverAppBar(

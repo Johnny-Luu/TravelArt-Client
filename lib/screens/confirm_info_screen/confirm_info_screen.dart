@@ -89,7 +89,7 @@ class _ConfirmInfoScreenState extends State<ConfirmInfoScreen> {
                     },
                     child: const Icon(Icons.arrow_back_ios_new_rounded),
                   ),
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 40.0),
                   Text(
                     'Your',
                     style: GoogleFonts.playfairDisplay(

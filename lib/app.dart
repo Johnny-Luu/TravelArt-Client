@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:travelapp/models/customer_model.dart';
 import 'package:travelapp/models/destination_model.dart';
@@ -24,17 +25,19 @@ class _AppState extends State<App> {
   late var tabs;
 
   void changeBottomNavbarVisibility(bool value) {
-    setState(() {
-      _hideNavbar = value;
-    });
+    if (_hideNavbar != value) {
+      setState(() {
+        _hideNavbar = value;
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
     tabs = [
-      const HomeScreen(),
-      const SearchScreen(),
+      HomeScreen(callbackSetNavbar: changeBottomNavbarVisibility),
+      SearchScreen(callbackSetNavbar: changeBottomNavbarVisibility),
       ProfileScreen(callbackSetNavbar: changeBottomNavbarVisibility),
     ];
   }
@@ -47,9 +50,12 @@ class _AppState extends State<App> {
         index: _currentTab,
         children: tabs,
       ),
-      bottomNavigationBar: _hideNavbar
-          ? const SizedBox()
-          : Container(
+      bottomNavigationBar: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        height: _hideNavbar ? 0 : kBottomNavigationBarHeight + 25,
+        child: Wrap(
+          children: [
+            Container(
               margin:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
               decoration: BoxDecoration(
@@ -116,6 +122,9 @@ class _AppState extends State<App> {
                 ),
               ),
             ),
+          ],
+        ),
+      ),
     );
   }
 }

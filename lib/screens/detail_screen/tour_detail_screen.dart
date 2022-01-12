@@ -85,7 +85,10 @@ class _TourDetailScreenState extends State<TourDetailScreen>
                 child: Hero(
                   tag: widget.type == 1 ? widget.tour.id : widget.tour.name,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30.0),
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    ),
                     child: Image(
                       image: widget.tourImg.image,
                       fit: BoxFit.cover,

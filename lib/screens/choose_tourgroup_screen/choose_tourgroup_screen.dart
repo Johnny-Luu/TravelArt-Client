@@ -68,7 +68,7 @@ class _ChooseTourGroupState extends State<ChooseTourGroupScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 40.0),
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0),
                         child: Column(

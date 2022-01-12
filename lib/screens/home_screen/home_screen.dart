@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelapp/models/customer_model.dart';
 import 'package:travelapp/models/destination_model.dart';
@@ -18,7 +19,9 @@ import 'package:travelapp/services/tour_services.dart';
 import 'package:travelapp/services/user_services.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final Function callbackSetNavbar;
+  const HomeScreen({Key? key, required this.callbackSetNavbar})
+      : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -30,22 +33,38 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Tour> tourList = [];
   List<Destination> destinationList = [];
 
+  final ScrollController _scrollController = ScrollController();
+  var isLoading = true;
+
   void loadData() async {
     tourList = await tourServices.getAllTours();
     destinationList = await destinationService.getFirstFiveDestinations();
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   void initState() {
     super.initState();
     loadData();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        widget.callbackSetNavbar(false);
+      } else if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse)  {
+        widget.callbackSetNavbar(true);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
+        controller: _scrollController,
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(vertical: 30.0),
         children: <Widget>[
@@ -108,9 +127,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 20.0),
-          destinationList.isNotEmpty
-              ? DestinationCarousel(destinationList: destinationList)
-              : Container(),
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : destinationList.isNotEmpty
+                  ? DestinationCarousel(destinationList: destinationList)
+                  : Container(),
           const SizedBox(height: 20.0),
           tourList.isNotEmpty ? TourCarousel(tourList: tourList) : Container(),
           const SizedBox(height: 20.0),
